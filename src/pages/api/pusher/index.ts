@@ -1,11 +1,9 @@
 import Pusher from 'pusher';
 
 export const pusher = new Pusher({
-  appId: '1529034',
-  key: '8d98df256164e76186ad',
-  secret: '57349b009c14e0924a8e',
-  cluster: 'us2',
-  encrypted: true
+  appId: process.env.PUSHER_APP_ID!,
+  key: process.env.PUSHER_APP_KEY!,
+  secret: process.env.PUSHER_APP_SECRET!,
+  cluster: process.env.PUSHER_APP_CLUSTER!,
+  useTLS: true
 });
-
-pusher.trigger('presence-halu-channel', 'say-halu', 'HALU!!!!');

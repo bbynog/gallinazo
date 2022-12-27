@@ -40,14 +40,14 @@ const SignIn = () => {
       </Head>
       <Main>
         <Title>SignIn Page</Title>
-        <Description>
-          <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit}>
+          <Description>
             <input name={'email'} />
             <input name={'password'} type={'password'} />
             <button>Sign In</button>
-          </form>
-          <Link href='/'>&larr; Go Back</Link>
-        </Description>
+            <Link href='/'>&larr; Go Back</Link>
+          </Description>
+        </form>
       </Main>
     </Container>
   );

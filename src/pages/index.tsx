@@ -27,6 +27,7 @@ export default function Home() {
         </Description>
         <Card title={'Sign Up'} href={'/signup'} />
         <Card title={'Sign In'} href={'/signin'} />
+        <Card title={'About (presencechannel testing'} href={'/about'} />
       </Main>
     </Container>
   );
