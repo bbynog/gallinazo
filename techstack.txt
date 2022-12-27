@@ -1,0 +1,6 @@
+nextjs w/ ts / deploy on vercel
+pusher to websocket
+mongoose for db
+styled-components
+toastify
+react-query

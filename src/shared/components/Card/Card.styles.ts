@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import Link from 'next/link';
 
-const FlexContainer = styled.div`
+export const FlexContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,7 +9,7 @@ const FlexContainer = styled.div`
   margin-top: 3rem;
 `;
 
-const Card = styled.div`
+export const StyledCard = styled.div`
   padding: 1.5rem;
   color: inherit;
   text-decoration: none;
@@ -27,23 +26,7 @@ const Card = styled.div`
   }
 `;
 
-const StyledA = styled.a`
+export const StyledA = styled.a`
   margin: 0 0 1rem 0;
   font-size: 1.5rem;
 `;
-
-const StyledLink = ({ href, name }: { href: string; name: string }) => (
-  <Link href={href} passHref legacyBehavior>
-    <StyledA>{name}</StyledA>
-  </Link>
-);
-
-export default function Cards() {
-  return (
-    <FlexContainer>
-      <Card>
-        <StyledLink href='/about' name='About Page &rarr;' />
-      </Card>
-    </FlexContainer>
-  );
-}
