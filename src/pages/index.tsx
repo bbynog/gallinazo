@@ -33,10 +33,7 @@ export default function Home() {
       </Head>
       <Main>
         <Title>Welcome to Gallinazo!</Title>
-        <Description>
-          Entry
-          <CodeTag>pages/index.tsx</CodeTag>
-        </Description>
+
         <Card title={'Sign Up'} href={'/signup'} />
         <Card title={'Sign In'} href={'/signin'} />
         <Card title={'Dashboard'} href={'/dashboard'} />
