@@ -1,4 +1,5 @@
-export interface Player {
+export default interface Player {
   id: number;
   name: string;
+  cardsCount: number;
 }

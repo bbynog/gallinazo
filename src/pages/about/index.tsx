@@ -2,7 +2,7 @@ import { getAuth } from 'firebase/auth';
 import Link from 'next/link';
 import pusherJs from 'pusher-js';
 import { useEffect } from 'react';
-import { Description, Container, Main, Title } from '@ui-components';
+import { Description, Container, Main, Title } from '@src/ui-components';
 
 export async function getServerSideProps() {
   return {

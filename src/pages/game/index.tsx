@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Container, Main, Title } from '@ui-components';
+import { Container, Main, Title } from '@src/ui-components';
 
 const GamePage = () => {
   return (

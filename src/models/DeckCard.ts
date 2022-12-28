@@ -1,6 +1,6 @@
-import { Player } from './Player';
+import Player from './Player';
 
-export interface Card {
+export default interface DeckCard {
   suit: 'hearts' | 'spades' | 'clubs' | 'diamonds' | null;
   value:
     | 'ace'
@@ -18,4 +18,5 @@ export interface Card {
     | 'king'
     | 'joker';
   ownerHistory: Player[];
+  currentPos: number;
 }

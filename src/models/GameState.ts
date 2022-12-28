@@ -1,5 +1,10 @@
-import { Player } from './Player';
+import DeckCard from './DeckCard';
+import Player from './Player';
+import Turn from './Turn';
 
-export interface GameState {
+export default interface GameState {
   playQueue: Player[];
+  deck: DeckCard[];
+  trash: DeckCard[];
+  turnHistory: Turn[];
 }

@@ -3,7 +3,7 @@ import { FormEvent } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
-import { Container, Description, Main, Title } from '@ui-components';
+import { Container, Description, Main, Title } from '@src/ui-components';
 
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 const SignUp = () => {

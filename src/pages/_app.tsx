@@ -2,7 +2,7 @@ import type { AppProps } from 'next/app';
 import { ThemeProvider, DefaultTheme } from 'styled-components';
 import { initializeFirebase } from '@setup';
 import GlobalStyle from '../styles/GlobalStyle';
-import { QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from 'react-query';
 import { reactQueryService } from '@services';
 
 const theme: DefaultTheme = {

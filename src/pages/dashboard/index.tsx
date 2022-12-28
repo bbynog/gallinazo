@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { axiosService } from '@services';
-import { Container, Description, Main, Title } from '@ui-components';
-import { Card } from '@components';
+import { Container, Description, Main, Title } from '@src/ui-components';
+import { Card } from '@src/components';
 
 interface DashboardProps {}
 interface Channel {

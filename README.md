@@ -10,7 +10,7 @@ Tech stack:
 
 \ - - [Pusher](https://pusher.com/)
 
-\ - - [ReactQuery](https://tanstack.com/query/v4/)
+\ - - [ReactQuery](https://react-query-v3.tanstack.com/)
 
 \ - - [StyledComponents](https://styled-components.com/)
 
