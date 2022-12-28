@@ -1,14 +1,9 @@
-import { getApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 
-import Card from '../shared/components/Card/Card';
-import CodeTag from '../shared/ui-components/CodeTag';
-import Container from '../shared/ui-components/Container';
-import Description from '../shared/ui-components/Description';
-import Main from '../shared/ui-components/Main';
-import Title from '../shared/ui-components/Title';
+import { Card } from '@components';
+import { Container, Main, Title } from '@ui-components';
 
 export default function Home() {
   const auth = getAuth();

@@ -1,9 +1,9 @@
 import type { AppProps } from 'next/app';
 import { ThemeProvider, DefaultTheme } from 'styled-components';
-import initializeFirebase from '../setup/firebase';
+import { initializeFirebase } from '@setup';
 import GlobalStyle from '../styles/GlobalStyle';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { reactQueryService } from '../services/ReactQueryService/ReactQueryService';
+import { reactQueryService } from '@services';
 
 const theme: DefaultTheme = {
   colors: {

@@ -1,33 +1,19 @@
-import { useState } from 'react';
-import { Card } from '../../models/Card';
+import Head from 'next/head';
+import { Container, Main, Title } from '@ui-components';
 
-// props from server
-const initialQueue = [1, 2, 3, 4];
-const initialHand: Card[] = [
-  {
-    suit: 'spades',
-    value: 'king',
-    ownerHistory: []
-  },
-  {
-    suit: 'hearts',
-    value: 'queen',
-    ownerHistory: []
-  },
-  {
-    suit: 'spades',
-    value: 'seven',
-    ownerHistory: []
-  },
-  {
-    suit: 'diamonds',
-    value: 'king',
-    ownerHistory: []
-  }
-];
-
-const Game = () => {
-  return <></>;
+const GamePage = () => {
+  return (
+    <Container>
+      <Head>
+        <title>GamePage</title>
+        <meta name='description' content='GamePage page' />
+        <link rel='icon' href='/favicon.ico' />
+      </Head>
+      <Main>
+        <Title>GamePage Page</Title>
+      </Main>
+    </Container>
+  );
 };
 
-export default Game;
+export default GamePage;

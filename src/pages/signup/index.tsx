@@ -1,12 +1,9 @@
-import { FormEvent, useRef } from 'react';
+import { FormEvent } from 'react';
 
 import Head from 'next/head';
 import Link from 'next/link';
 
-import Container from '../../shared/ui-components/Container';
-import Description from '../../shared/ui-components/Description';
-import Main from '../../shared/ui-components/Main';
-import Title from '../../shared/ui-components/Title';
+import { Container, Description, Main, Title } from '@ui-components';
 
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 const SignUp = () => {

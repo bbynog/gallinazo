@@ -21,4 +21,4 @@ class ReactQueryService {
   }
 }
 
-export const reactQueryService = ReactQueryService.getInstance();
+export default ReactQueryService.getInstance();

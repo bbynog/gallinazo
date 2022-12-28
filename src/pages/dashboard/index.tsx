@@ -1,12 +1,11 @@
 import Head from 'next/head';
 import Link from 'next/link';
+
 import { useEffect, useState } from 'react';
-import axiosService from '../../services/AxiosService/AxiosService';
-import Card from '../../shared/components/Card/Card';
-import Container from '../../shared/ui-components/Container';
-import Description from '../../shared/ui-components/Description';
-import Main from '../../shared/ui-components/Main';
-import Title from '../../shared/ui-components/Title';
+
+import { axiosService } from '@services';
+import { Container, Description, Main, Title } from '@ui-components';
+import { Card } from '@components';
 
 interface DashboardProps {}
 interface Channel {
@@ -42,7 +41,7 @@ export default function Dashboard({}: DashboardProps) {
     };
 
     getPresenceChannels();
-  }, []);
+  }, [axios]);
   return (
     <Container>
       <Head>

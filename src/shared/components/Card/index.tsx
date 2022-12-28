@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { PropsWithChildren } from 'react';
 import { FlexContainer, StyledA, StyledCard } from './Card.styles';
 
 const StyledLink = ({ href, name }: { href: string; name: string }) => (
@@ -12,7 +13,11 @@ interface CardProps {
   href?: string;
 }
 
-export default function Card({ title, href }: CardProps) {
+export default function Card({
+  title,
+  href,
+  children
+}: PropsWithChildren<CardProps>) {
   return (
     <FlexContainer>
       <StyledCard>
