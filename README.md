@@ -3,13 +3,13 @@
 Gallinazo is a memory based card game.
 
 Tech stack:
-\_ [NextJS](https://nextjs.org/)
+\- [NextJS](https://nextjs.org/)
 
-\_ [Pusher](https://pusher.com/)
+\- [Pusher](https://pusher.com/)
 
-\_ [ReactQuery](https://tanstack.com/query/v4/)
+\- [ReactQuery](https://tanstack.com/query/v4/)
 
-\_ [StyledComponents](https://styled-components.com/)
+\- [StyledComponents](https://styled-components.com/)
 
 First, run the development server:
 
