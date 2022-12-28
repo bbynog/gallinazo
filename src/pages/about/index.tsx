@@ -43,7 +43,11 @@ export default function About({
         authEndpoint
       });
 
-      const channel = pusher.subscribe('presence-halu-channel');
+      const channel = pusher.subscribe(
+        currentUser.email === 'gabs@gmail.com'
+          ? 'presence-halu-channel'
+          : 'presence-halu-channel-2'
+      );
 
       channel.bind('pusher:subscription_succeeded', (members: any) => {
         console.log(`There are ${members.count} members in this channel`);

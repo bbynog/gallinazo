@@ -1,4 +1,4 @@
-import { FormEvent, useRef } from 'react';
+import { FormEvent } from 'react';
 
 import Head from 'next/head';
 import Link from 'next/link';
@@ -8,10 +8,16 @@ import Description from '../../shared/ui-components/Description';
 import Main from '../../shared/ui-components/Main';
 import Title from '../../shared/ui-components/Title';
 
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  browserLocalPersistence,
+  getAuth,
+  setPersistence,
+  signInWithEmailAndPassword
+} from 'firebase/auth';
 
 const SignIn = () => {
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const auth = getAuth();
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -19,10 +25,10 @@ const SignIn = () => {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
-    const auth = getAuth();
-    console.log('auth', auth);
-
-    signInWithEmailAndPassword(auth, email || '', password || '')
+    setPersistence(auth, browserLocalPersistence)
+      .then(() => {
+        return signInWithEmailAndPassword(auth, email || '', password || '');
+      })
       .then((userCredential) => {
         console.log('userCredential', userCredential);
       })

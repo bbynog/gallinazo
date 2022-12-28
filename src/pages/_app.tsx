@@ -2,6 +2,8 @@ import type { AppProps } from 'next/app';
 import { ThemeProvider, DefaultTheme } from 'styled-components';
 import initializeFirebase from '../setup/firebase';
 import GlobalStyle from '../styles/GlobalStyle';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { reactQueryService } from '../services/ReactQueryService/ReactQueryService';
 
 const theme: DefaultTheme = {
   colors: {
@@ -10,14 +12,18 @@ const theme: DefaultTheme = {
   }
 };
 
-export const { firebaseApp, auth, firestore } = initializeFirebase();
+initializeFirebase();
+
+const queryClient = reactQueryService.getQueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <Component {...pageProps} />
+        <QueryClientProvider client={queryClient}>
+          <GlobalStyle />
+          <Component {...pageProps} />
+        </QueryClientProvider>
       </ThemeProvider>
     </>
   );

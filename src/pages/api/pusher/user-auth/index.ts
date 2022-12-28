@@ -15,10 +15,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const authResponse = pusher.authorizeChannel(socketId, channel, user);
 
-    res.status(200).send(authResponse);
+    res.status(200).json(authResponse);
   } catch (error) {
     console.log('api user-auth error', error);
-    res.status(403).send({ message: error });
+    res.status(403).json({ message: error });
   }
 };
 

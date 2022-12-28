@@ -9,14 +9,14 @@ const StyledLink = ({ href, name }: { href: string; name: string }) => (
 
 interface CardProps {
   title: string;
-  href: string;
+  href?: string;
 }
 
 export default function Card({ title, href }: CardProps) {
   return (
     <FlexContainer>
       <StyledCard>
-        <StyledLink href={href} name={`${title}`} />
+        {href ? <StyledLink href={href} name={`${title}`} /> : title}
       </StyledCard>
     </FlexContainer>
   );
