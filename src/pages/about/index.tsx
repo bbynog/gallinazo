@@ -28,8 +28,6 @@ export default function About({
   useEffect(() => {
     const currentUser = getAuth().currentUser;
 
-    console.log('PUSHER_APP_KEY', PUSHER_APP_KEY);
-    console.log('PUSHER_APP_CLUSTER', PUSHER_APP_CLUSTER);
     console.log('currentUser', currentUser);
 
     if (currentUser?.uid && PUSHER_APP_CLUSTER && PUSHER_APP_KEY) {

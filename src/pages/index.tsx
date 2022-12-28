@@ -45,7 +45,6 @@ export default function Home() {
           <button
             onClick={() => {
               auth?.signOut();
-              console.log('run');
             }}>
             Logout
           </button>
