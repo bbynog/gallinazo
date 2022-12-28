@@ -20,9 +20,9 @@
       "@components": ["src/shared/components/"],
       "@ui-components": ["src/shared/ui-components/"],
       "@types": ["src/shared/types/"],
-      "@setup": ["src/setup"],
-      "@services": ["src/services"],
-      "@constants": ["src/constants"]
+      "@setup": ["src/setup/"],
+      "@services": ["src/services/"],
+      "@constants": ["src/constants/"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
