@@ -6,6 +6,8 @@ Tech stack:
 
 \ - - [NextJS](https://nextjs.org/)
 
+\ - - [Firebase](https://firebase.google.com/)
+
 \ - - [Pusher](https://pusher.com/)
 
 \ - - [ReactQuery](https://tanstack.com/query/v4/)

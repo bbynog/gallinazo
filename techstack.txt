@@ -1,6 +1,6 @@
 nextjs w/ ts / deploy on vercel
 pusher to websocket
-mongoose for db
+firebase
 styled-components
 toastify
 react-query
