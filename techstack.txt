@@ -1,6 +1,0 @@
-nextjs w/ ts / deploy on vercel
-pusher to websocket
-firebase
-styled-components
-toastify
-react-query
