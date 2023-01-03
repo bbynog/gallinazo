@@ -1,0 +1,22 @@
+nome: Gallinazo
+
+ref:
+    * urubu
+    * jogo de carta
+
+pontuação e poderes:
+    * K vermelho: -1
+    * Joker: 0
+    * A: 1
+    * 2: 2
+    * 3: 3
+    * 4: 4
+    * 5: 5
+    * 6: 6
+    * 7: 7 - pode ver uma carta sua
+    * 8: 8 - pode ver uma carta sua
+    * 9: 9 -  pode ver uma carta do amiguinho
+    * 10: 10 -  pode ver uma carta do amiguinho
+    * J: 15 - pode trocar carta do amigo com voce sem ver
+    * Q: 15 - pode trocar carta entre os amigos sem ver
+    * K: 15 - pode ver a carta do amigo e se quiser, pode trocar com uma sua(sem ver a sua)

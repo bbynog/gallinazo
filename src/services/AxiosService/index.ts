@@ -1,24 +1,24 @@
 import axios, { AxiosInstance } from 'axios';
 
 class AxiosService {
-  private static instance = new AxiosService();
-  private instance: AxiosInstance;
+  private static serviceInstance = new AxiosService();
+  private axiosInstance: AxiosInstance;
 
   private constructor() {
-    this.instance = axios.create();
+    this.axiosInstance = axios.create();
   }
 
   getInstance(): AxiosInstance {
-    return this.instance;
+    return this.axiosInstance;
   }
 
-  public static getInstance(): AxiosService {
-    if (!AxiosService.instance) {
-      AxiosService.instance = new AxiosService();
+  public static getServiceInstance(): AxiosService {
+    if (!AxiosService.serviceInstance) {
+      AxiosService.serviceInstance = new AxiosService();
     }
 
-    return AxiosService.instance;
+    return AxiosService.serviceInstance;
   }
 }
 
-export default AxiosService.getInstance();
+export default AxiosService.getServiceInstance();
