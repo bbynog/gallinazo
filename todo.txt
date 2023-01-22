@@ -1,8 +1,6 @@
-- stop using vercel env variables 
+- define gameflow
+
 - create db
 - implement prisma
+    * define models
 - implement next-auth
-
-
-* Removed Firebase from project. NextAuth will be implemented soon.
-* Installed prisma, nextAuth

@@ -4,6 +4,9 @@ CGS= clientGameState
 * Clients cannot have access to the values of the cards, or the deck, or anything that could lead to cheating, 
 so server must do the heavy lifting
 
+* ServerEvents = secretData
+* ClientEvents = publicData(any client could see or alter(minus the user_id, which is sent through metadata, DONT PUT USERID ON THE OBJECT, SINCE ANY USER CAN TAMPER))
+
 * Must do individual CGS validation everytime a new CGS is fired to check if this client did not miss any CGS changes(if did not miss any events)
 
 GameFlow:
@@ -11,7 +14,7 @@ GameFlow:
 
     {
         type: 'SELF' | 'FOE' 
-        success: boolean;
+        success: boolean; (true > !!isFirstPlayerToCut && !!isRightCard)
         isFirstPlayerToCut: boolean;
         isRightCard: boolean;
     }
@@ -30,9 +33,14 @@ GameFlow:
                     * everyone sees the card and draws a new card to the hand
                 }
 
-        * triggerd by client event (uploads CGS: topDiscardPileCard, cardsOnTheHandOfTheCutter--, maybe cards on the hand of the  )
+        * cuts fire 2 events:
+            * client event 
+                * uploads CGS: topDiscardPileCard, cardsOnTheHandOfTheCutter--, maybe cards count on the hand of the foe
+
+            * server event
+                * updates SGS (topDiscardPileCard) and count the cut on the actions on Game table
+        
         * all top cards of the discard pile can be Cut
-        * cuts are client events ;
         * when a player finish a round
     *1. One player creates a room(becomes the roomOwner).
         - client pusher(CP) initiates a pusher presence-channel
