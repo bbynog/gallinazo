@@ -16,7 +16,6 @@
     "incremental": true,
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
-
     "paths": {
       // src/
       "@services/*": ["src/services/*"],
@@ -35,6 +34,13 @@
       }
     ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.mjs", "**/*.cjs"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.mjs",
+    "**/*.cjs",
+    ".next/types/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }

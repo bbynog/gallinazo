@@ -2,7 +2,7 @@
 
 import pusherJs from 'pusher-js';
 import { getAuthendpoint } from './functions';
-import { env } from 'src/env/client.mjs';
+import { clientEnv } from 'src/env/client.mjs';
 
 class ClientPusherService {
   private static serviceInstance = new ClientPusherService();
@@ -16,8 +16,8 @@ class ClientPusherService {
 
   getInstance(uid: string): pusherJs {
     if (!this.pusherInstance || uid !== this.serviceUid) {
-      const PUSHER_APP_KEY = env.NEXT_PUBLIC_PUSHER_APP_KEY;
-      const PUSHER_APP_CLUSTER = env.NEXT_PUBLIC_PUSHER_APP_CLUSTER;
+      const PUSHER_APP_KEY = clientEnv.NEXT_PUBLIC_PUSHER_APP_KEY;
+      const PUSHER_APP_CLUSTER = clientEnv.NEXT_PUBLIC_PUSHER_APP_CLUSTER;
       console.log(
         '🚀 ~ file: index.ts:18 ~ PusherService ~ getInstance ~ PUSHER_APP_CLUSTER',
         PUSHER_APP_CLUSTER
