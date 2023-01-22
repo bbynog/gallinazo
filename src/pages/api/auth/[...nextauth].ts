@@ -3,7 +3,7 @@ import DiscordProvider from 'next-auth/providers/discord';
 // Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 
-import { env } from '../../../env/server.mjs';
+import { serverEnv } from '../../../env/server.mjs';
 import { prisma } from '../../../server/db';
 
 export const authOptions: NextAuthOptions = {
@@ -11,7 +11,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     session({ session, user }) {
       if (session.user) {
-        // @ts-expect-error
+        // @ts-expect-error why
         session.user.id = user.id;
       }
       return session;
@@ -21,8 +21,8 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET
+      clientId: serverEnv.DISCORD_CLIENT_ID,
+      clientSecret: serverEnv.DISCORD_CLIENT_SECRET
     })
     /**
      * ...add more providers here
