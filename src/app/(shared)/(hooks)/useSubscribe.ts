@@ -1,39 +1,50 @@
-import PusherService from '@services/PusherService';
-import { Channel } from 'pusher-js';
+'use client';
+
+import ClientPusherService from '@services/PusherService';
+import type { Channel } from 'pusher-js';
 import { useEffect, useState } from 'react';
 import useAuth from './useAuth';
 
-interface useSubscribeParams {
-  channelName: string;
-}
+const useSubscribe = (channelName: string) => {
+  const [subscribe, setSubscribe] = useState<boolean>(false);
+  // const { currentUser } = useAuth();
 
-const useSubscribe = ({ channelName }: useSubscribeParams) => {
-  const { currentUser } = useAuth();
   const [channel, setChannel] = useState<Channel | undefined>();
 
   useEffect(() => {
-    console.log('useSubscribe()s useEffect');
-    if (currentUser?.uid) {
-      const pusher = PusherService.getInstance(currentUser.uid);
+    const currentUser = {
+      uid: 'mock'
+    };
+
+    console.log('useSubscribe()s useEffect', currentUser?.uid);
+    if (subscribe && currentUser?.uid) {
+      const pusher = ClientPusherService.getInstance(currentUser.uid);
 
       const subscriptionChannel = pusher.subscribe(channelName);
 
       setChannel(subscriptionChannel);
+      setSubscribe(false);
     }
-    return () => {};
-  }, [currentUser, channelName]);
+    return () => undefined;
+  }, [channelName, subscribe]);
 
+  const doSubscribe = () => {
+    setSubscribe(true);
+  };
   const unsubscribe = () => {
     if (!channel) {
       console.warn('there are no channels to unsubscribe');
     }
 
+    // unsafe
     channel?.unsubscribe();
+    setSubscribe(false);
   };
 
   return {
     channel: channel,
-    unsubscribe: unsubscribe
+    unsubscribe: unsubscribe,
+    subscribe: doSubscribe
   };
 };
 

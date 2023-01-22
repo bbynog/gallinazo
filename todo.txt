@@ -1,0 +1,8 @@
+- stop using vercel env variables 
+- create db
+- implement prisma
+- implement next-auth
+
+
+* Removed Firebase from project. NextAuth will be implemented soon.
+* Installed prisma, nextAuth

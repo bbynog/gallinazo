@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Pusher from 'pusher';
 
-import { pusher } from '..';
+import { pusher } from '../../../../server/pusher';
 
 const getPresenceChannels = async () => {
   const pusherOptions: Pusher.RequestOptions = {
@@ -14,7 +14,7 @@ const getPresenceChannels = async () => {
       if (response.status !== 200) {
         throw Error('unexpected status');
       }
-      // Parse the response body as JSON
+
       return response.json();
     })
     .catch((error) => {
@@ -29,7 +29,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.status(200).json(presenceChannelsResponse);
   } catch (error) {
-    console.log('error on get-presence-channels');
+    console.log('error on get-presence-channels', error);
+
+    res.status(500).json({ message: 'gallinazo server apologises' });
   }
 };
 

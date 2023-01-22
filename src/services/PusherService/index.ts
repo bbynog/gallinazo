@@ -1,9 +1,11 @@
-import pusherJs from 'pusher-js';
-import getConfig from 'next/config';
-import { getAuthendpoint } from './functions';
+'use client';
 
-class PusherService {
-  private static serviceInstance = new PusherService();
+import pusherJs from 'pusher-js';
+import { getAuthendpoint } from './functions';
+import { env } from 'src/env/client.mjs';
+
+class ClientPusherService {
+  private static serviceInstance = new ClientPusherService();
   private pusherInstance: pusherJs | null;
   private serviceUid: string | null;
 
@@ -14,8 +16,16 @@ class PusherService {
 
   getInstance(uid: string): pusherJs {
     if (!this.pusherInstance || uid !== this.serviceUid) {
-      const { PUSHER_APP_KEY, PUSHER_APP_CLUSTER } =
-        getConfig().publicRuntimeConfig;
+      const PUSHER_APP_KEY = env.NEXT_PUBLIC_PUSHER_APP_KEY;
+      const PUSHER_APP_CLUSTER = env.NEXT_PUBLIC_PUSHER_APP_CLUSTER;
+      console.log(
+        '🚀 ~ file: index.ts:18 ~ PusherService ~ getInstance ~ PUSHER_APP_CLUSTER',
+        PUSHER_APP_CLUSTER
+      );
+      console.log(
+        '🚀 ~ file: index.ts:18 ~ PusherService ~ getInstance ~ PUSHER_APP_KEY',
+        PUSHER_APP_KEY
+      );
 
       const authEndpoint = getAuthendpoint(uid);
 
@@ -23,6 +33,7 @@ class PusherService {
         cluster: PUSHER_APP_CLUSTER,
         authEndpoint
       });
+
       this.serviceUid = uid;
 
       return this.pusherInstance;
@@ -30,13 +41,13 @@ class PusherService {
     return this.pusherInstance;
   }
 
-  public static getServiceInstance(): PusherService {
-    if (!PusherService.serviceInstance) {
-      PusherService.serviceInstance = new PusherService();
+  public static getServiceInstance(): ClientPusherService {
+    if (!ClientPusherService.serviceInstance) {
+      ClientPusherService.serviceInstance = new ClientPusherService();
     }
 
-    return PusherService.serviceInstance;
+    return ClientPusherService.serviceInstance;
   }
 }
 
-export default PusherService.getServiceInstance();
+export default ClientPusherService.getServiceInstance();

@@ -3,10 +3,7 @@ import ProfileMenu from './ProfileMenu';
 
 const NavBar = () => {
   return (
-    <div
-      className={
-        'flex-1 h-8 min-h-8 w-full flex-row content-between bg-indigo-500'
-      }>
+    <div className={'flex h-8 min-h-8 w-full justify-between bg-indigo-500'}>
       <button className={'px-5 text-white'}>
         <Link href={'/signup'}>SignUp</Link>
       </button>
