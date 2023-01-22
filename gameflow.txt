@@ -1,39 +1,78 @@
-CPI = client pusher
 CGS= clientGameState
+
+CGS {
+    any changes on client game state must be fired through client events and fire a server event as well
+        * client event:
+            * must be listened by all clients and updates UI
+
+        * server event:
+            * will update the old clientgamestate by the new one on the DB
+            * will do calculations and update the serverGameState on DB
+            * fire event to the clients with new CGS
+}
+
+
 
 * Clients cannot have access to the values of the cards, or the deck, or anything that could lead to cheating, 
 so server must do the heavy lifting
 
 * Must do individual CGS validation everytime a new CGS is fired to check if this client did not miss any CGS changes(if did not miss any events)
 
-GameFlow:
-    ** Cut:
+    Possible Player Actions {
 
-    {
+    TURN {
+        turnAction: KNOCK | DRAW
+            if DRAW:
+        drewFrom: 'DECK' | 'DISCARD_PILE' | null(only if KNOCK),
+        drewCard: Card | null;
+        drawAction: KEEPs | UNLEASHes
+        keepsDiscard: handCard;
+        powerReference: {
+            power: Power;
+            effects: {
+                power_exchange: [Card | Card] | null,
+                seeCard: Card | null
+            }
+        }
+    }
+
+        * TurnFlow: 
+                * can be cut at any moment (doesnt affect the turn)
+                * player chooses if he is going to use the top card of discard pile(replace instantly by one of his cards) OR get a card from deck
+                    * if he gets a card from deck he will choose if he replaces one of his cards or if he discards the card he got and unleash the cards power
+                * if card has powers, the turn will await until he uses the power, then go to next turn.
+                * else: next turn;
+
+    CUT {
         type: 'SELF' | 'FOE' 
         success: boolean;
         isFirstPlayerToCut: boolean;
         isRightCard: boolean;
     }
-        
-        * can be successful or unsuccessful (unsuccessful cut is when a player try to cut but other player cut first)
-            * successful:
-                * the player was the first player to cut on this top card of discard pile)
-                * it was the right card
-            * unsuccessful:
-                
-                if (isFirstPlayerToCut === false) {
-                    * everyone sees the card
-                }
 
-                if (isRightCard === false) {
-                    * everyone sees the card and draws a new card to the hand
-                }
+        * CutFlow:
+            * can be done at any moment since the start of the game to the end
+            * can be successful or unsuccessful (unsuccessful cut is when a player try to cut but other player cut first)
+                * successful:
+                    * the player was the first player to cut on this top card of discard pile)
+                    * it was the right card
+                * unsuccessful:
+                    
+                    if (isFirstPlayerToCut === false) {
+                        * everyone sees the card
+                    }
 
-        * triggerd by client event (uploads CGS: topDiscardPileCard, cardsOnTheHandOfTheCutter--, maybe cards on the hand of the  )
-        * all top cards of the discard pile can be Cut
-        * cuts are client events ;
-        * when a player finish a round
+                    if (isRightCard === false) {
+                        * everyone sees the card and draws a new card to the hand
+                    }
+
+            * triggerd by client event (uploads CGS: topDiscardPileCard, cardsOnTheHandOfTheCutter--, maybe cards on the hand of the  )
+            * all top cards of the discard pile can be Cut
+            * when a player finish a round
+}
+
+Game Flow:
+
     *1. One player creates a room(becomes the roomOwner).
         - client pusher(CP) initiates a pusher presence-channel
         - clientGameState(CGS) is initialized on the client.
