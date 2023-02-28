@@ -1,7 +1,7 @@
 'use client';
 
 import useAuth from '@hooks/useAuth';
-import Player from '@models/Player';
+import type Player from '@models/Player';
 import Container from '@ui-components/Container';
 import { use, useEffect, useState } from 'react';
 

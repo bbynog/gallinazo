@@ -1,5 +1,3 @@
-import { FormEvent } from 'react';
-
 import Link from 'next/link';
 
 import Container from '@ui-components/Container';

@@ -5,19 +5,13 @@ generator client {
     provider = "prisma-client-js"
 }
 
-datasource db {
-    provider = "sqlite"
-    // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-    // Further reading:
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
-    url      = env("DATABASE_URL")
+generator erd {
+    provider = "prisma-erd-generator"
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 // Necessary for Next auth
@@ -27,12 +21,12 @@ model Account {
     type              String
     provider          String
     providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
+    refresh_token     String? @db.Text
+    access_token      String? @db.Text
     expires_at        Int?
     token_type        String?
     scope             String?
-    id_token          String? // @db.Text
+    id_token          String? @db.Text
     session_state     String?
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -42,8 +36,8 @@ model Account {
 model Session {
     id           String   @id @default(cuid())
     sessionToken String   @unique
-    userId       String
     expires      DateTime
+    userId       String
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
@@ -55,6 +49,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    player        Player?
 }
 
 model VerificationToken {
@@ -63,4 +58,305 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Game {
+    id      String @id @default(cuid())
+    tableId String
+    table   Table  @relation(fields: [tableId], references: [id])
+
+    playersId   String[]
+    players     Player[]
+    turns       Turn[]
+    startedAt   DateTime
+    endedAt     DateTime?
+    playerHands PlayerHand[]
+
+    @@map("games")
+}
+
+model Player {
+    id   String @id @default(cuid())
+    name String @unique
+
+    transitHistory   PlayerTableTransit[]
+    tableHostHistory Table[]
+
+    user   User   @relation(fields: [userId], references: [id])
+    userId String @unique
+
+    playerHands PlayerHand[]
+    games       Game[]
+    turns       Turn[]
+    cuts        Cut[]
+    cutSources  CutSource[]
+    discards    Discard[]
+    gameCards   GameCard[]
+
+    @@map("players")
+}
+
+model Table {
+    id String @id @default(cuid())
+
+    name String @unique
+
+    games          Game[]
+    status         TableStatus[]
+    playersTransit PlayerTableTransit[]
+
+    hostId String
+    host   Player @relation(fields: [hostId], references: [id])
+
+    openedAt DateTime  @default(now())
+    closedAt DateTime?
+
+    @@map("tables")
+}
+
+model PlayerTableTransit {
+    id String @id @default(cuid())
+
+    playerId String
+    player   Player @relation(fields: [playerId], references: [id])
+
+    tableId String
+    table   Table  @relation(fields: [tableId], references: [id])
+
+    transitAt DateTime     @default(now())
+    transit   TableTransit
+
+    @@map("player_table_transits")
+}
+
+model Turn {
+    id     String     @id @default(cuid())
+    action TurnAction
+
+    playerId String
+    player   Player @relation(fields: [playerId], references: [id])
+
+    gameId String
+    game   Game   @relation(fields: [gameId], references: [id])
+
+    drawId String @unique
+    draw   Draw   @relation(fields: [drawId], references: [id])
+
+    discardId String  @unique
+    discard   Discard @relation(fields: [discardId], references: [id])
+
+    cuts Cut[]
+
+    @@map("turns")
+}
+
+model Cut {
+    id String @id @default(cuid())
+
+    targetCardId String
+    targetCard   GameCard @relation(fields: [targetCardId], references: [id])
+
+    cutterId String
+    cutter   Player @relation(fields: [cutterId], references: [id])
+
+    turnId String
+    turn   Turn   @relation(fields: [turnId], references: [id])
+
+    cutSource CutSource?
+
+    @@map("cuts")
+}
+
+model CutSource {
+    id String @id @default(cuid())
+
+    cutId String @unique
+    cut   Cut    @relation(fields: [cutId], references: [id])
+
+    gameCardId String
+    card       GameCard @relation(fields: [gameCardId], references: [id])
+
+    playerId String
+    player   Player @relation(fields: [playerId], references: [id])
+
+    @@map("cut_sources")
+}
+
+model Draw {
+    id String @id @default(cuid())
+
+    turn Turn?
+
+    from CardSource
+
+    cardId String
+    card   GameCard @relation(fields: [cardId], references: [id])
+
+    @@map("draws")
+}
+
+model Discard {
+    id String @id @default(cuid())
+
+    turn Turn?
+
+    gameCardId String
+    gameCard   GameCard @relation(fields: [gameCardId], references: [id])
+
+    effectTargetId String       @unique
+    effects        EffectTarget @relation(fields: [effectTargetId], references: [id])
+
+    playerId String
+    player   Player @relation(fields: [playerId], references: [id])
+
+    @@map("discards")
+}
+
+model Effect {
+    id            String         @id @default(cuid())
+    description   String
+    name          String
+    effectTargets EffectTarget[]
+
+    @@map("effects")
+}
+
+model EffectTarget {
+    id String @id @default(cuid())
+
+    discard Discard?
+
+    effectId String
+    effect   Effect @relation(fields: [effectId], references: [id])
+
+    activeTargetId String   @unique
+    activeTarget   HandCard @relation(name: "ActiveTarget", fields: [activeTargetId], references: [id])
+
+    passiveTargetId String?   @unique
+    passiveTarget   HandCard? @relation(fields: [passiveTargetId], references: [id])
+
+    @@map("effect_targets")
+}
+
+model Card {
+    id String @id @default(cuid())
+
+    suit  CardSuit
+    name  CardName
+    value Int
+
+    @@map("cards")
+}
+
+model TableStatus {
+    id      String              @id @default(cuid())
+    tableId String
+    table   Table               @relation(fields: [tableId], references: [id])
+    history TableStatusChange[]
+
+    @@map("table_statuses")
+}
+
+model TableStatusChange {
+    id            String              @id @default(cuid())
+    tableStatusId String
+    tableStatus   TableStatus         @relation(fields: [tableStatusId], references: [id])
+    changeTo      TableStatusChangeTo
+    createdAt     DateTime            @default(now())
+
+    @@map("table_status_changes")
+}
+
+model PlayerHand {
+    id    String     @id @default(cuid())
+    cards HandCard[]
+
+    ownerId String
+    owner   Player @relation(fields: [ownerId], references: [id])
+
+    gameId String
+    game   Game   @relation(fields: [gameId], references: [id])
+
+    @@map("player_hands")
+}
+
+model HandCard {
+    id String @id @default(cuid())
+
+    playerHandId String
+    hand         PlayerHand @relation(fields: [playerHandId], references: [id])
+
+    position Int
+
+    gameCardId String
+    card       GameCard @relation(fields: [gameCardId], references: [id])
+
+    activeTarget  EffectTarget? @relation("ActiveTarget")
+    passiveTarget EffectTarget?
+
+    @@map("hand_cards")
+}
+
+model GameCard {
+    id           String   @id @default(cuid())
+    ownerHistory Player[]
+
+    draws    Draw[]
+    discards Discard[]
+
+    handsHistory HandCard[]
+    cutSources   CutSource[]
+    cuts         Cut[]
+
+    @@map("game_cards")
+}
+
+enum TableStatusChangeTo {
+    CLOSE
+    OPEN
+    INGAME
+}
+
+enum TableTransit {
+    IN
+    OUT
+}
+
+enum TurnAction {
+    DRAW
+    KNOCK
+}
+
+enum DrawAction {
+    KEEP
+    CAST
+}
+
+enum CardSource {
+    DECK
+    DISCARD_PILE
+}
+
+enum CardSuit {
+    SPADES
+    CLUBS
+    DIAMONDS
+    HEARTS
+}
+
+enum CardName {
+    ACE
+    TWO
+    THREE
+    FOUR
+    FIVE
+    SIX
+    SEVEN
+    EIGHT
+    NINE
+    TEN
+    JACK
+    QUEEN
+    KING
+    JOKER
 }

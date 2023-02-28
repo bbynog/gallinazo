@@ -1,22 +1,233 @@
-nome: Gallinazo
+CGS = clientGameState
 
-ref:
-    * urubu
-    * jogo de carta
+CGS {
+    any changes on client game state must be fired through client events and fire a server event as well
+        * client event:
+            * must be listened by all clients and updates UI
 
-pontuação e poderes:
-    * K vermelho: -1
-    * Joker: 0
-    * A: 1
-    * 2: 2
-    * 3: 3
-    * 4: 4
-    * 5: 5
-    * 6: 6
-    * 7: 7 - pode ver uma carta sua
-    * 8: 8 - pode ver uma carta sua
-    * 9: 9 -  pode ver uma carta do amiguinho
-    * 10: 10 -  pode ver uma carta do amiguinho
-    * J: 15 - pode trocar carta do amigo com voce sem ver
-    * Q: 15 - pode trocar carta entre os amigos sem ver
-    * K: 15 - pode ver a carta do amigo e se quiser, pode trocar com uma sua(sem ver a sua)
+        * server event:
+            * will update the old clientgamestate by the new one on the DB
+            * will do calculations and update the serverGameState on DB
+            * fire event to the clients with new CGS
+}
+
+
+
+* Clients cannot have access to the values of the cards, or the deck, or anything that could lead to cheating, 
+so server must do the heavy lifting
+
+* Must do individual CGS validation everytime a new CGS is fired to check if this client did not miss any CGS changes(if did not miss any events)
+
+    Possible Player Actions {
+
+    
+
+    CUT {
+        type: 'SELF' | 'FOE' 
+        success: boolean;
+            if FOE:
+        card: Card
+    }
+
+        
+}
+
+* CutFlow:
+            * can be done at any moment since the start of the game to the end
+            * can be successful or unsuccessful (unsuccessful cut is when a player try to cut but other player cut first)
+                * successful:
+                    * the player was the first player to cut on this top card of discard pile)
+                    * it was the right card
+                * unsuccessful:
+                    
+                    if (isFirstPlayerToCut === false) {
+                        * everyone sees the card
+                    }
+
+                    if (isRightCard === false) {
+                        * everyone sees the card and draws a new card to the hand
+                    }
+
+            * triggerd by client event (uploads CGS: topDiscardPileCard, cardsOnTheHandOfTheCutter--, maybe cards on the hand of the  )
+            * all top cards of the discard pile can be Cut
+            * when a player finish a round
+
+* Game Flow:
+
+    *1. One player creates a table(becomes the tablehost).
+        - client pusher(CP) initiates a pusher presence-channel
+        - clientGameState(CGS) is initialized on the client.
+        - roomOwner fires an event to initialize serverGameState.
+
+    *2. Player waits more players to join(2 player min)
+        - when a player enters the room, fires an event to update players CGS with new player
+
+    *3. players need to click on some "ready" button to mark that they are ready to begin playing.
+        - ready or not ready fires an event to update CGS with players ready
+            - should be a delay to prevent users from abusing this button/event, overwhelming the channel
+    
+    *4. when every player on the room is ready, the room owner can start the game. So he does.
+        - fires a "start" event
+        - server listens and do calculations
+            - randomize deck
+            - draw 4 cards for each player (poker style) 
+            - first player to enter room is first to play, other players are shuffled
+            
+    *6. pregame
+        - 20s to choose the cards you want to look (the cards you chose are signalized on your table cards)
+    
+    *7. game
+        - first round is a table round.
+        - one card is drawn frmo deck and placed into discard pile
+        - cutting is allowed
+        - 5s duration
+        - normal turns begin
+
+    *8. Turn
+        * if its first game of the table, the table host is the first player to play.
+        else follow order
+        * player chooses if he is drawing or if he knocks (knocks are only allowed after round 3)
+        * player chooses if he is going to use the top card of discard pile(replace instantly by one of his cards) OR get a card from deck
+            * if he gets a card from deck he will choose if he replaces one of his cards or if he discards the card he got and unleash the cards power
+        * if discarded && card has powers, the turn will await until he uses the power, then go to next turn.
+        * else: next turn;
+
+    *9. KNOCK 
+        * if a player knocks, he is instantly shielded(powers cant get into his cards) and the last round begins
+    
+    *10. Last round:
+        * after the last turn of the last round, every card is turned up.
+        * players have 5s to cut cards
+        * after 5s, Score Board is shown
+
+    *11. endgame:
+        * unsubscribe from events and channels
+        * score is shown and stored
+        * player stay on the table gameless
+        
+    *11. Score
+        * if the players knocks:
+            * if he wins: -10 points plus cards
+            * if he loses: +10 points plus cards
+        * every else: cards scores
+
+
+Game: {
+    id: Number;
+    table: Table;
+    endgamePlayers: User[];
+    quitPlayers: User[];
+    turns: Turn[];
+    startedAt: DateTime;
+    endedAt: DateTime;
+}
+
+Player: {
+    id: number;
+    user: User;
+}
+
+Turn: {
+    id: number;
+    player: User;
+    game: Game;
+    action: TurnAction; 
+    draw: Draw | null;  
+    cut: Cut | null;
+}
+
+TurnAction: 
+{
+    id: 1;
+    name: DRAW;
+},
+{
+    id: 2;
+    name: KNOCK;
+}
+
+
+Draw: {
+    id: number;
+    turn: Turn;
+    from: CardSource;
+    card: Card;
+    discard: Card;
+    action: DrawAction;
+}
+
+CardSource: 
+{
+    id: 1;
+    name: DECK;
+},
+{
+    id: 2;
+    name: DISCARD_PILE;
+}
+
+DrawAction:
+{
+    id: number;
+    name: KEEP;
+    effects: null;
+},
+{
+    id: number;
+    name: CAST;
+    effects: SpellCast;
+}
+
+Spell: {
+    id: number;
+    description: big string;
+    name: string;
+}
+
+SpellCast: {
+    id: number;
+    spell: Spell;
+    target: SpellCastTarget;
+}
+
+SpellCastTargets {
+    id: number;
+    spellCast: SpellCast;
+    primary: Card;
+    secondary: Card | null;
+}
+
+Table: {
+    id: Number;
+    host: User;
+    name: string;
+    games: Game[];
+    status: TableStatus;
+    playersHistory: PlayerTable[];
+    openedAt: DateTime;
+    closedAt: DateTime;
+}
+
+TableStatus {
+    id: number;
+    table: Table;
+    history: TableStatusChange[];
+}
+
+TableStatusChange: {
+    id: number;
+    tableStatus: TableStatus;
+    changeTo: OPEN | CLOSE;
+    openedAt: DateTime | null;
+    closedAt: DateTime | null;
+}
+
+
+PlayerTable {
+    id: number;
+    user: User;
+    table: Table;
+    sit: boolean;
+    joinedAt: DateTime[];
+    leftAt: DateTime[];
+}
