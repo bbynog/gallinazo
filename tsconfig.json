@@ -17,16 +17,15 @@
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
     "paths": {
-      // src/
       "@services/*": ["src/services/*"],
       "@models/*": ["src/models/*"],
       "@env/*": ["src/env/*"],
       "@server/*": ["src/server/*"],
-      // src/app/(shared)/
       "@components/*": ["src/app/(shared)/(components)/*"],
       "@ui-components/*": ["src/app/(shared)/(ui-components)/*"],
       "@hooks/*": ["src/app/(shared)/(hooks)/*"],
-      "@utils/*": ["src/app/(shared)/(utils)/*"]
+      "@utils/*": ["src/app/(shared)/(utils)/*"],
+      "@features/*": ["src/features/*"]
     },
     "plugins": [
       {

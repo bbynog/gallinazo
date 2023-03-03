@@ -1,10 +1,12 @@
+import { getServerAuthSession } from '@features/authentication/getServerAuthSession';
 import Container from '@ui-components/Container';
 
-export default function Home() {
+export default async function Home() {
+  const serverSession = await getServerAuthSession();
+  console.log('server session', serverSession);
   return (
     <Container>
-      {/* <NavBar /> */}
-      <p className={'text-red'}>Welcome to gallinazo!</p>
+      <p className={'text-red'}>Welcome to gallinazo, {serverSession}!</p>
     </Container>
   );
 }
