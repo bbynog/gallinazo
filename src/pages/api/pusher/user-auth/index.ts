@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const uid = req.query.user_id;
 
     const user: PresenceChannelData = {
-      user_id: uid as string
+      user_id: uid as string,
     };
 
     const authResponse = pusher.authorizeChannel(socketId, channel, user);

@@ -18,7 +18,7 @@ const selectChannelObject = (channels?: {
     const info = channelInfo as { user_count: number };
     channelsRes.push({
       name: channelName,
-      userCount: info.user_count
+      userCount: info.user_count,
     });
   }
 
@@ -29,8 +29,8 @@ const getPresenceChannels = async () => {
   const presenceChannelsResponse = await fetch(
     serverEnv.APP_DOMAIN + '/api/pusher/get-presence-channels',
     {
-      next: { revalidate: 10 }
-    }
+      next: { revalidate: 10 },
+    },
   );
 
   console.log('presenceChannelsResponse', presenceChannelsResponse);

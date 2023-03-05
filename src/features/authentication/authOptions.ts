@@ -2,6 +2,10 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import type { DefaultSession, NextAuthOptions } from 'next-auth';
 import { prisma } from 'src/server/db';
 
+import { serverEnv } from '@env/server.mjs';
+
+import DiscordProvider from 'next-auth/providers/discord';
+
 declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
@@ -22,6 +26,7 @@ declare module 'next-auth' {
  *
  * @see https://next-auth.js.org/configuration/options
  */
+
 export const authOptions: NextAuthOptions = {
   callbacks: {
     session({ session, user }) {
@@ -30,14 +35,16 @@ export const authOptions: NextAuthOptions = {
         // session.user.role = user.role; <-- put other properties on the session here
       }
       return session;
-    }
+    },
   },
   adapter: PrismaAdapter(prisma),
   providers: [
-    // DiscordProvider({
-    //   clientId: env.DISCORD_CLIENT_ID,
-    //   clientSecret: env.DISCORD_CLIENT_SECRET,
-    // }),
+    DiscordProvider({
+      clientId: serverEnv.DISCORD_CLIENT_ID,
+      clientSecret: serverEnv.DISCORD_CLIENT_SECRET,
+    }),
+    // OAuth URL
+    // https://discord.com/api/oauth2/authorize?client_id=1081058465864237147&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F&response_type=code&scope=identify%20email%20voice
     /**
      * ...add more providers here.
      *
@@ -47,5 +54,5 @@ export const authOptions: NextAuthOptions = {
      *
      * @see https://next-auth.js.org/providers/github
      */
-  ]
+  ],
 };

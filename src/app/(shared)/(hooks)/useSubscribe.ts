@@ -13,7 +13,7 @@ const useSubscribe = (channelName: string) => {
 
   useEffect(() => {
     const currentUser = {
-      uid: 'mock'
+      uid: 'mock',
     };
 
     console.log('useSubscribe()s useEffect', currentUser?.uid);
@@ -44,7 +44,7 @@ const useSubscribe = (channelName: string) => {
   return {
     channel: channel,
     unsubscribe: unsubscribe,
-    subscribe: doSubscribe
+    subscribe: doSubscribe,
   };
 };
 

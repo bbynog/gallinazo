@@ -17,8 +17,8 @@ const signIn = async (channelName: string, uid: string) => {
     cache: 'no-cache',
     body: JSON.stringify({
       channelName: channelName,
-      uid: uid
-    })
+      uid: uid,
+    }),
   });
 
   return signInResponse;

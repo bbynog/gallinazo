@@ -13,7 +13,8 @@ const SignUp = () => {
           <Button
             onClick={() => {
               return;
-            }}></Button>
+            }}
+          ></Button>
         </form>
         <Link href='/'>&larr; Go Back</Link>
       </span>

@@ -6,12 +6,12 @@ export const metadata = {
   title: 'Gallinazo',
   description: 'Gallinazo app',
   icons: {
-    icon: '/favicon.ico'
-  }
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
-  children
+  children,
 }: {
   children: React.ReactNode;
 }) {

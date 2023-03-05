@@ -1,4 +1,4 @@
-import { unstable_getServerSession } from 'next-auth/next';
+import { getServerSession } from 'next-auth/next';
 import { authOptions } from './authOptions';
 
 /**
@@ -7,5 +7,5 @@ import { authOptions } from './authOptions';
  * @see https://next-auth.js.org/configuration/nextjs
  */
 export const getServerAuthSession = () => {
-  return unstable_getServerSession(authOptions);
+  return getServerSession(authOptions);
 };

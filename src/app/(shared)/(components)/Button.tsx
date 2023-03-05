@@ -1,12 +1,13 @@
 'use client';
 
+import type { PropsWithChildren } from 'react';
+
 interface ButtonProps {
   onClick: () => void;
-  label?: string;
 }
 
-const Button = ({ onClick, label }: ButtonProps) => {
-  return <button onClick={onClick}>{label}</button>;
+const Button = ({ onClick, children }: PropsWithChildren<ButtonProps>) => {
+  return <button onClick={onClick}>{children}</button>;
 };
 
 export default Button;
