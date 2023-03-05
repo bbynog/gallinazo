@@ -1,15 +1,9 @@
-/*
-  Warnings:
+-- CreateEnum
+CREATE TYPE "TableStatusChangeTo" AS ENUM ('CLOSE', 'OPEN', 'INGAME');
 
-  - You are about to drop the column `userId` on the `player_table_transits` table. All the data in the column will be lost.
-  - You are about to drop the `accounts` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `sessions` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `users` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `verification_tokens` table. If the table is not empty, all the data it contains will be lost.
-  - Added the required column `startedAt` to the `games` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `playerId` to the `player_table_transits` table without a default value. This is not possible if the table is not empty.
+-- CreateEnum
+CREATE TYPE "TableTransit" AS ENUM ('IN', 'OUT');
 
-*/
 -- CreateEnum
 CREATE TYPE "TurnAction" AS ENUM ('DRAW', 'KNOCK');
 
@@ -24,38 +18,6 @@ CREATE TYPE "CardSuit" AS ENUM ('SPADES', 'CLUBS', 'DIAMONDS', 'HEARTS');
 
 -- CreateEnum
 CREATE TYPE "CardName" AS ENUM ('ACE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE', 'TEN', 'JACK', 'QUEEN', 'KING', 'JOKER');
-
--- DropForeignKey
-ALTER TABLE "accounts" DROP CONSTRAINT "accounts_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "player_table_transits" DROP CONSTRAINT "player_table_transits_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "sessions" DROP CONSTRAINT "sessions_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "tables" DROP CONSTRAINT "tables_hostId_fkey";
-
--- AlterTable
-ALTER TABLE "games" ADD COLUMN     "endedAt" TIMESTAMP(3),
-ADD COLUMN     "startedAt" TIMESTAMP(3) NOT NULL;
-
--- AlterTable
-ALTER TABLE "player_table_transits" DROP COLUMN "userId",
-ADD COLUMN     "playerId" TEXT NOT NULL;
-
--- DropTable
-DROP TABLE "accounts";
-
--- DropTable
-DROP TABLE "sessions";
-
--- DropTable
-DROP TABLE "users";
-
--- DropTable
-DROP TABLE "verification_tokens";
 
 -- CreateTable
 CREATE TABLE "Account" (
@@ -104,6 +66,17 @@ CREATE TABLE "VerificationToken" (
 );
 
 -- CreateTable
+CREATE TABLE "games" (
+    "id" TEXT NOT NULL,
+    "tableId" TEXT NOT NULL,
+    "playersId" TEXT[],
+    "startedAt" TIMESTAMP(3) NOT NULL,
+    "endedAt" TIMESTAMP(3),
+
+    CONSTRAINT "games_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "players" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -113,19 +86,32 @@ CREATE TABLE "players" (
 );
 
 -- CreateTable
-CREATE TABLE "player_games" (
+CREATE TABLE "tables" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "hostId" TEXT NOT NULL,
+    "openedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "closedAt" TIMESTAMP(3),
+
+    CONSTRAINT "tables_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "player_table_transits" (
     "id" TEXT NOT NULL,
     "playerId" TEXT NOT NULL,
-    "gameId" TEXT NOT NULL,
+    "tableId" TEXT NOT NULL,
+    "transitAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "transit" "TableTransit" NOT NULL,
 
-    CONSTRAINT "player_games_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "player_table_transits_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "turns" (
     "id" TEXT NOT NULL,
     "action" "TurnAction" NOT NULL,
-    "playerGameId" TEXT NOT NULL,
+    "playerId" TEXT NOT NULL,
     "gameId" TEXT NOT NULL,
     "drawId" TEXT NOT NULL,
     "discardId" TEXT NOT NULL,
@@ -139,7 +125,6 @@ CREATE TABLE "cuts" (
     "targetCardId" TEXT NOT NULL,
     "cutterId" TEXT NOT NULL,
     "turnId" TEXT NOT NULL,
-    "cutSourceId" TEXT NOT NULL,
 
     CONSTRAINT "cuts_pkey" PRIMARY KEY ("id")
 );
@@ -149,7 +134,7 @@ CREATE TABLE "cut_sources" (
     "id" TEXT NOT NULL,
     "cutId" TEXT NOT NULL,
     "gameCardId" TEXT NOT NULL,
-    "playerGameId" TEXT NOT NULL,
+    "playerId" TEXT NOT NULL,
 
     CONSTRAINT "cut_sources_pkey" PRIMARY KEY ("id")
 );
@@ -168,7 +153,7 @@ CREATE TABLE "discards" (
     "id" TEXT NOT NULL,
     "gameCardId" TEXT NOT NULL,
     "effectTargetId" TEXT NOT NULL,
-    "playerGameId" TEXT NOT NULL,
+    "playerId" TEXT NOT NULL,
 
     CONSTRAINT "discards_pkey" PRIMARY KEY ("id")
 );
@@ -203,6 +188,24 @@ CREATE TABLE "cards" (
 );
 
 -- CreateTable
+CREATE TABLE "table_statuses" (
+    "id" TEXT NOT NULL,
+    "tableId" TEXT NOT NULL,
+
+    CONSTRAINT "table_statuses_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "table_status_changes" (
+    "id" TEXT NOT NULL,
+    "tableStatusId" TEXT NOT NULL,
+    "changeTo" "TableStatusChangeTo" NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "table_status_changes_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "player_hands" (
     "id" TEXT NOT NULL,
     "ownerId" TEXT NOT NULL,
@@ -229,7 +232,13 @@ CREATE TABLE "game_cards" (
 );
 
 -- CreateTable
-CREATE TABLE "_GameCardToPlayerGame" (
+CREATE TABLE "_GameToPlayer" (
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "_GameCardToPlayer" (
     "A" TEXT NOT NULL,
     "B" TEXT NOT NULL
 );
@@ -256,13 +265,16 @@ CREATE UNIQUE INDEX "players_name_key" ON "players"("name");
 CREATE UNIQUE INDEX "players_userId_key" ON "players"("userId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "tables_name_key" ON "tables"("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "turns_drawId_key" ON "turns"("drawId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "turns_discardId_key" ON "turns"("discardId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "cuts_cutSourceId_key" ON "cuts"("cutSourceId");
+CREATE UNIQUE INDEX "cut_sources_cutId_key" ON "cut_sources"("cutId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "discards_effectTargetId_key" ON "discards"("effectTargetId");
@@ -274,10 +286,16 @@ CREATE UNIQUE INDEX "effect_targets_activeTargetId_key" ON "effect_targets"("act
 CREATE UNIQUE INDEX "effect_targets_passiveTargetId_key" ON "effect_targets"("passiveTargetId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_GameCardToPlayerGame_AB_unique" ON "_GameCardToPlayerGame"("A", "B");
+CREATE UNIQUE INDEX "_GameToPlayer_AB_unique" ON "_GameToPlayer"("A", "B");
 
 -- CreateIndex
-CREATE INDEX "_GameCardToPlayerGame_B_index" ON "_GameCardToPlayerGame"("B");
+CREATE INDEX "_GameToPlayer_B_index" ON "_GameToPlayer"("B");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_GameCardToPlayer_AB_unique" ON "_GameCardToPlayer"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_GameCardToPlayer_B_index" ON "_GameCardToPlayer"("B");
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -286,13 +304,10 @@ ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "games" ADD CONSTRAINT "games_tableId_fkey" FOREIGN KEY ("tableId") REFERENCES "tables"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "players" ADD CONSTRAINT "players_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "player_games" ADD CONSTRAINT "player_games_playerId_fkey" FOREIGN KEY ("playerId") REFERENCES "players"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "player_games" ADD CONSTRAINT "player_games_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "tables" ADD CONSTRAINT "tables_hostId_fkey" FOREIGN KEY ("hostId") REFERENCES "players"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -301,7 +316,10 @@ ALTER TABLE "tables" ADD CONSTRAINT "tables_hostId_fkey" FOREIGN KEY ("hostId") 
 ALTER TABLE "player_table_transits" ADD CONSTRAINT "player_table_transits_playerId_fkey" FOREIGN KEY ("playerId") REFERENCES "players"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "turns" ADD CONSTRAINT "turns_playerGameId_fkey" FOREIGN KEY ("playerGameId") REFERENCES "player_games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "player_table_transits" ADD CONSTRAINT "player_table_transits_tableId_fkey" FOREIGN KEY ("tableId") REFERENCES "tables"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "turns" ADD CONSTRAINT "turns_playerId_fkey" FOREIGN KEY ("playerId") REFERENCES "players"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "turns" ADD CONSTRAINT "turns_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -316,19 +334,19 @@ ALTER TABLE "turns" ADD CONSTRAINT "turns_discardId_fkey" FOREIGN KEY ("discardI
 ALTER TABLE "cuts" ADD CONSTRAINT "cuts_targetCardId_fkey" FOREIGN KEY ("targetCardId") REFERENCES "game_cards"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "cuts" ADD CONSTRAINT "cuts_cutterId_fkey" FOREIGN KEY ("cutterId") REFERENCES "player_games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "cuts" ADD CONSTRAINT "cuts_cutterId_fkey" FOREIGN KEY ("cutterId") REFERENCES "players"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "cuts" ADD CONSTRAINT "cuts_turnId_fkey" FOREIGN KEY ("turnId") REFERENCES "turns"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "cuts" ADD CONSTRAINT "cuts_cutSourceId_fkey" FOREIGN KEY ("cutSourceId") REFERENCES "cut_sources"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "cut_sources" ADD CONSTRAINT "cut_sources_cutId_fkey" FOREIGN KEY ("cutId") REFERENCES "cuts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "cut_sources" ADD CONSTRAINT "cut_sources_gameCardId_fkey" FOREIGN KEY ("gameCardId") REFERENCES "game_cards"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "cut_sources" ADD CONSTRAINT "cut_sources_playerGameId_fkey" FOREIGN KEY ("playerGameId") REFERENCES "player_games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "cut_sources" ADD CONSTRAINT "cut_sources_playerId_fkey" FOREIGN KEY ("playerId") REFERENCES "players"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "draws" ADD CONSTRAINT "draws_cardId_fkey" FOREIGN KEY ("cardId") REFERENCES "game_cards"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -340,7 +358,7 @@ ALTER TABLE "discards" ADD CONSTRAINT "discards_gameCardId_fkey" FOREIGN KEY ("g
 ALTER TABLE "discards" ADD CONSTRAINT "discards_effectTargetId_fkey" FOREIGN KEY ("effectTargetId") REFERENCES "effect_targets"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "discards" ADD CONSTRAINT "discards_playerGameId_fkey" FOREIGN KEY ("playerGameId") REFERENCES "player_games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "discards" ADD CONSTRAINT "discards_playerId_fkey" FOREIGN KEY ("playerId") REFERENCES "players"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "effect_targets" ADD CONSTRAINT "effect_targets_effectId_fkey" FOREIGN KEY ("effectId") REFERENCES "effects"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -350,6 +368,12 @@ ALTER TABLE "effect_targets" ADD CONSTRAINT "effect_targets_activeTargetId_fkey"
 
 -- AddForeignKey
 ALTER TABLE "effect_targets" ADD CONSTRAINT "effect_targets_passiveTargetId_fkey" FOREIGN KEY ("passiveTargetId") REFERENCES "hand_cards"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "table_statuses" ADD CONSTRAINT "table_statuses_tableId_fkey" FOREIGN KEY ("tableId") REFERENCES "tables"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "table_status_changes" ADD CONSTRAINT "table_status_changes_tableStatusId_fkey" FOREIGN KEY ("tableStatusId") REFERENCES "table_statuses"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "player_hands" ADD CONSTRAINT "player_hands_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "players"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -364,7 +388,13 @@ ALTER TABLE "hand_cards" ADD CONSTRAINT "hand_cards_playerHandId_fkey" FOREIGN K
 ALTER TABLE "hand_cards" ADD CONSTRAINT "hand_cards_gameCardId_fkey" FOREIGN KEY ("gameCardId") REFERENCES "game_cards"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_GameCardToPlayerGame" ADD CONSTRAINT "_GameCardToPlayerGame_A_fkey" FOREIGN KEY ("A") REFERENCES "game_cards"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_GameToPlayer" ADD CONSTRAINT "_GameToPlayer_A_fkey" FOREIGN KEY ("A") REFERENCES "games"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_GameCardToPlayerGame" ADD CONSTRAINT "_GameCardToPlayerGame_B_fkey" FOREIGN KEY ("B") REFERENCES "player_games"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_GameToPlayer" ADD CONSTRAINT "_GameToPlayer_B_fkey" FOREIGN KEY ("B") REFERENCES "players"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_GameCardToPlayer" ADD CONSTRAINT "_GameCardToPlayer_A_fkey" FOREIGN KEY ("A") REFERENCES "game_cards"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_GameCardToPlayer" ADD CONSTRAINT "_GameCardToPlayer_B_fkey" FOREIGN KEY ("B") REFERENCES "players"("id") ON DELETE CASCADE ON UPDATE CASCADE;
