@@ -10,6 +10,8 @@
     "postinstall": "prisma generate",
     "migrate:dev": "bash ./src/scripts/db/prisma_migrate_dev.sh",
     "migrate:prod": "bash ./src/scripts/db/prisma_migrate_prod.sh",
+    "db:push:dev": "bash ./src/scripts/db/prisma_db_push_dev.sh",
+    "db:push:prod": "bash ./src/scripts/db/prisma_db_push_prod.sh",
     "test": "dotenv -e .env.test -- jest -i --runInBand"
   },
   "dependencies": {
