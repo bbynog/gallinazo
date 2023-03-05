@@ -9,6 +9,7 @@ import { z } from 'zod';
 export const clientSchema = z.object({
   NEXT_PUBLIC_PUSHER_APP_CLUSTER: z.string(),
   NEXT_PUBLIC_PUSHER_APP_KEY: z.string(),
+  NEXT_PUBLIC_APP_URL: z.string(),
 });
 
 /**
@@ -18,9 +19,9 @@ export const clientSchema = z.object({
  * @type {{ [k in keyof z.infer<typeof clientSchema>]: z.infer<typeof clientSchema>[k] | undefined }}
  */
 export const _clientEnv = {
-  // NEXT_PUBLIC_APP_DOMAIN: process.env.NEXT_PUBLIC_APP_DOMAIN,
-  // NEXT_PUBLIC_PUSHER_APP_SECRET: process.env.NEXT_PUBLIC_PUSHER_APP_SECRET,
-  // NEXT_PUBLIC_PUSHER_APP_ID: process.env.NEXT_PUBLIC_PUSHER_APP_ID,
   NEXT_PUBLIC_PUSHER_APP_CLUSTER: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER,
   NEXT_PUBLIC_PUSHER_APP_KEY: process.env.NEXT_PUBLIC_PUSHER_APP_KEY,
+  NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_VERCEL_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    : 'http://localhost:3000',
 };

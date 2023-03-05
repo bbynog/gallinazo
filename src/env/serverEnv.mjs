@@ -28,3 +28,4 @@ for (let key of Object.keys(__serverEnv.data)) {
 }
 
 export const serverEnv = { ...__serverEnv.data, ...clientEnv };
+console.log('serverEnv exported: ', serverEnv);

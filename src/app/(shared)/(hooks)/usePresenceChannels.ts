@@ -29,7 +29,7 @@ const selectChannelObject = (channels?: {
 const getPresenceChannels = async () => {
   console.log('serverEnv', serverEnv);
   const presenceChannelsResponse = await fetch(
-    serverEnv.APP_DOMAIN + '/api/pusher/get-presence-channels',
+    clientEnv.NEXT_PUBLIC_APP_URL + '/api/pusher/get-presence-channels',
     {
       next: { revalidate: 10 },
     },

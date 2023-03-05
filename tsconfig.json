@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -22,33 +18,15 @@
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
     "paths": {
-      "@services/*": [
-        "src/services/*"
-      ],
-      "@models/*": [
-        "src/models/*"
-      ],
-      "@env/*": [
-        "src/env/*"
-      ],
-      "@server/*": [
-        "src/server/*"
-      ],
-      "@components/*": [
-        "src/app/(shared)/(components)/*"
-      ],
-      "@ui-components/*": [
-        "src/app/(shared)/(ui-components)/*"
-      ],
-      "@hooks/*": [
-        "src/app/(shared)/(hooks)/*"
-      ],
-      "@utils/*": [
-        "src/app/(shared)/(utils)/*"
-      ],
-      "@features/*": [
-        "src/features/*"
-      ]
+      "@services/*": ["src/services/*"],
+      "@models/*": ["src/models/*"],
+      "@env/*": ["src/env/*"],
+      "@server/*": ["src/server/*"],
+      "@components/*": ["src/app/(shared)/(components)/*"],
+      "@ui-components/*": ["src/app/(shared)/(ui-components)/*"],
+      "@hooks/*": ["src/app/(shared)/(hooks)/*"],
+      "@utils/*": ["src/app/(shared)/(utils)/*"],
+      "@features/*": ["src/features/*"]
     },
     "plugins": [
       {
@@ -56,15 +34,6 @@
       }
     ]
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.tsx",
-    "**/*.cjs",
-    "**/*.mjs",
-    "**/*.ts",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["**/*.tsx", "**/*.cjs", "**/*.mjs", "**/*.ts"],
+  "exclude": ["node_modules"]
 }
