@@ -6,7 +6,7 @@ import { pusher } from '../../../../server/pusher';
 const getPresenceChannels = async () => {
   const pusherOptions: Pusher.RequestOptions = {
     path: '/channels',
-    params: { filter_by_prefix: 'presence-', info: 'user_count' }
+    params: { filter_by_prefix: 'presence-', info: 'user_count' },
   };
   return await pusher
     .get(pusherOptions)

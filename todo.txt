@@ -1,6 +1,3 @@
-- define gameflow
-
-- create db
+- create db - supabase
 - implement prisma
-    * define models
 - implement next-auth

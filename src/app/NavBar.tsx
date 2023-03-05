@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import ProfileMenu from './ProfileMenu';
+import ProfileMenu from './signin/ProfileMenu';
 
 const NavBar = () => {
   return (
-    <div className={'flex h-8 min-h-8 w-full justify-between bg-indigo-500'}>
+    <div className={'min-h-8 flex h-8 w-full justify-between bg-indigo-500'}>
       <button className={'px-5 text-white'}>
         <Link href={'/signup'}>SignUp</Link>
       </button>

@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 const GameBoard = () => {
   useEffect(() => {
     //
+    //
   }, []);
 
   return (

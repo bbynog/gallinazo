@@ -17,11 +17,13 @@ export const serverSchema = z.object({
     // Since NextAuth.js automatically uses the VERCEL_URL if present.
     (str) => process.env.VERCEL_URL ?? str,
     // VERCEL_URL doesn't include `https` so it cant be validated as a URL
-    process.env.VERCEL ? z.string() : z.string().url()
+    process.env.VERCEL ? z.string() : z.string().url(),
   ),
   APP_DOMAIN: z.string(),
   PUSHER_APP_SECRET: z.string(),
-  PUSHER_APP_ID: z.string()
+  PUSHER_APP_ID: z.string(),
+  DISCORD_CLIENT_ID: z.string(),
+  DISCORD_CLIENT_SECRET: z.string(),
 });
 
 /**
@@ -36,7 +38,9 @@ export const _serverEnv = {
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   APP_DOMAIN: process.env.APP_DOMAIN,
   PUSHER_APP_SECRET: process.env.PUSHER_APP_SECRET,
-  PUSHER_APP_ID: process.env.PUSHER_APP_ID
+  PUSHER_APP_ID: process.env.PUSHER_APP_ID,
+  DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
+  DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
 };
 
 /**
@@ -46,7 +50,7 @@ export const _serverEnv = {
  */
 export const clientSchema = z.object({
   NEXT_PUBLIC_PUSHER_APP_CLUSTER: z.string(),
-  NEXT_PUBLIC_PUSHER_APP_KEY: z.string()
+  NEXT_PUBLIC_PUSHER_APP_KEY: z.string(),
 });
 
 /**
@@ -60,5 +64,5 @@ export const _clientEnv = {
   // NEXT_PUBLIC_PUSHER_APP_SECRET: process.env.NEXT_PUBLIC_PUSHER_APP_SECRET,
   // NEXT_PUBLIC_PUSHER_APP_ID: process.env.NEXT_PUBLIC_PUSHER_APP_ID,
   NEXT_PUBLIC_PUSHER_APP_CLUSTER: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER,
-  NEXT_PUBLIC_PUSHER_APP_KEY: process.env.NEXT_PUBLIC_PUSHER_APP_KEY
+  NEXT_PUBLIC_PUSHER_APP_KEY: process.env.NEXT_PUBLIC_PUSHER_APP_KEY,
 };

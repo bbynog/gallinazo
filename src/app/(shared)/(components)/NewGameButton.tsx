@@ -2,14 +2,14 @@
 
 import useAuth from '@hooks/useAuth';
 import useSubscribe from '@hooks/useSubscribe';
-import { PropsWithChildren, useEffect, useState } from 'react';
 import generatePresenceChannelName from '@utils/generatePresenceChannelName';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState, type PropsWithChildren } from 'react';
 
 const NewGameButton = ({ children }: PropsWithChildren) => {
   const { currentUser } = useAuth();
   console.log('currentUser SubscribeButton', currentUser);
-  const [channelName, setChannelName] = useState('');
+  const [channelName, setChannelName] = useState<string>('');
   const { channel, unsubscribe, subscribe } = useSubscribe(channelName);
 
   const router = useRouter();

@@ -22,7 +22,7 @@ const useAuth = () => {
 
   return {
     currentUser: 'vinculated to fir3base',
-    signOut: () => 'must change the code to next auth and mysql db'
+    signOut: () => 'must change the code to next auth and mysql db',
   };
 };
 

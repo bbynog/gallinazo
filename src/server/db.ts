@@ -12,7 +12,7 @@ export const prisma =
     log:
       serverEnv.NODE_ENV === 'development'
         ? ['query', 'error', 'warn']
-        : ['error']
+        : ['error'],
   });
 
 if (serverEnv.NODE_ENV !== 'production') {

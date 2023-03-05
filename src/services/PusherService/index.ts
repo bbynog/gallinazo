@@ -20,18 +20,18 @@ class ClientPusherService {
       const PUSHER_APP_CLUSTER = clientEnv.NEXT_PUBLIC_PUSHER_APP_CLUSTER;
       console.log(
         '🚀 ~ file: index.ts:18 ~ PusherService ~ getInstance ~ PUSHER_APP_CLUSTER',
-        PUSHER_APP_CLUSTER
+        PUSHER_APP_CLUSTER,
       );
       console.log(
         '🚀 ~ file: index.ts:18 ~ PusherService ~ getInstance ~ PUSHER_APP_KEY',
-        PUSHER_APP_KEY
+        PUSHER_APP_KEY,
       );
 
       const authEndpoint = getAuthendpoint(uid);
 
       this.pusherInstance = new pusherJs(PUSHER_APP_KEY, {
         cluster: PUSHER_APP_CLUSTER,
-        authEndpoint
+        authEndpoint,
       });
 
       this.serviceUid = uid;
