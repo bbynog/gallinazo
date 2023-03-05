@@ -8,13 +8,10 @@ import { useEffect, useState, type PropsWithChildren } from 'react';
 
 const NewGameButton = ({ children }: PropsWithChildren) => {
   const { currentUser } = useAuth();
-  console.log('currentUser SubscribeButton', currentUser);
   const [channelName, setChannelName] = useState<string>('');
   const { channel, unsubscribe, subscribe } = useSubscribe(channelName);
 
   const router = useRouter();
-
-  console.log('channelName SubscribeButtin', channelName);
 
   useEffect(() => {
     if (currentUser?.uid && !channelName) {
@@ -23,7 +20,6 @@ const NewGameButton = ({ children }: PropsWithChildren) => {
   }, [currentUser, channelName]);
 
   useEffect(() => {
-    console.log('channel', channel);
     channel?.bind(
       'pusher:subscription_succeeded',
       (members: { count: number }) => {

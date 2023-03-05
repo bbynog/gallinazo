@@ -1,15 +1,15 @@
-'use client';
+import SignOutButton from '@components/SignOutButton';
+import { getServerAuthSession } from '@features/authentication/getServerAuthSession';
 
-import useAuth from '@hooks/useAuth';
-
-const ProfileMenu = () => {
-  const { currentUser, signOut } = useAuth();
-
+const ProfileMenu = async () => {
+  const session = await getServerAuthSession();
   return (
     <div className='flex flex-row'>
-      <p>HALU: </p>
-      <p>{currentUser?.uid}</p>
-      {currentUser ? <button onClick={signOut}>Logout</button> : null}
+      <>
+        <p>HALU: </p>
+        <p>{session?.user.name || session?.user.email || 'Guest'}</p>
+        {session?.user.id ? <SignOutButton children={'Sign Out'} /> : null}
+      </>
     </div>
   );
 };

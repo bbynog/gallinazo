@@ -18,14 +18,6 @@ class ClientPusherService {
     if (!this.pusherInstance || uid !== this.serviceUid) {
       const PUSHER_APP_KEY = clientEnv.NEXT_PUBLIC_PUSHER_APP_KEY;
       const PUSHER_APP_CLUSTER = clientEnv.NEXT_PUBLIC_PUSHER_APP_CLUSTER;
-      console.log(
-        '🚀 ~ file: index.ts:18 ~ PusherService ~ getInstance ~ PUSHER_APP_CLUSTER',
-        PUSHER_APP_CLUSTER,
-      );
-      console.log(
-        '🚀 ~ file: index.ts:18 ~ PusherService ~ getInstance ~ PUSHER_APP_KEY',
-        PUSHER_APP_KEY,
-      );
 
       const authEndpoint = getAuthendpoint(uid);
 

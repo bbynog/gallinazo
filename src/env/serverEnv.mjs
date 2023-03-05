@@ -7,9 +7,7 @@ import { clientEnv } from './clientEnv.mjs';
 import { formatErrors } from './formatErrors.mjs';
 import { serverSchema, _serverEnv } from './serverSchema.mjs';
 
-console.log('serverEnv before zod parsing', _serverEnv);
 const __serverEnv = serverSchema.safeParse(_serverEnv);
-console.log('serverEnv after zod parsing', __serverEnv);
 
 if (!__serverEnv.success) {
   console.error(
@@ -28,4 +26,3 @@ for (let key of Object.keys(__serverEnv.data)) {
 }
 
 export const serverEnv = { ...__serverEnv.data, ...clientEnv };
-console.log('serverEnv exported: ', serverEnv);

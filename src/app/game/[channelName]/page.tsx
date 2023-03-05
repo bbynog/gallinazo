@@ -27,7 +27,6 @@ const signIn = async (channelName: string, uid: string) => {
 };
 
 const GamePage = ({ params }: GamePageProps) => {
-  console.log('params gamepage: ', params);
   const { channelName } = params;
   const { currentUser } = useAuth();
 

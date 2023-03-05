@@ -2,9 +2,7 @@
 import { clientSchema, _clientEnv } from './clientSchema.mjs';
 import { formatErrors } from './formatErrors.mjs';
 
-console.log('client before zod parsing', _clientEnv);
 const __clientEnv = clientSchema.safeParse(_clientEnv);
-console.log('client after zod parsing', __clientEnv);
 
 if (!__clientEnv.success) {
   console.error(
