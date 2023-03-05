@@ -10,6 +10,7 @@ export const clientSchema = z.object({
   NEXT_PUBLIC_PUSHER_APP_CLUSTER: z.string(),
   NEXT_PUBLIC_PUSHER_APP_KEY: z.string(),
   NEXT_PUBLIC_APP_URL: z.string(),
+  NEXT_PUBLIC_VERCEL_ENV: z.string(),
 });
 
 /**
@@ -24,4 +25,5 @@ export const _clientEnv = {
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_VERCEL_URL
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
     : 'http://localhost:3000',
+  NEXT_PUBLIC_VERCEL_ENV: process.env.NEXT_PUBLIC_VERCEL_ENV || 'development',
 };
