@@ -1,3 +1,4 @@
+import { clientEnv } from '@env/clientEnv.mjs';
 import { getServerAuthSession } from '@features/authentication/getServerAuthSession';
 import Container from '@ui-components/Container';
 
@@ -9,7 +10,7 @@ export default async function Home() {
     'server session',
     serverSession ? JSON.stringify(serverSession, null, 2) : null,
   );
-  console.log('env process', process.env);
+  console.log('clientEnv home', clientEnv);
   return (
     <Container>
       <p className={'text-red'}>Welcome to gallinazo!</p>
