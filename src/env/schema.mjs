@@ -24,7 +24,7 @@ export const serverSchema = z.object({
   PUSHER_APP_ID: z.string(),
   DISCORD_CLIENT_ID: z.string(),
   DISCORD_CLIENT_SECRET: z.string(),
-  VERCEL_ENV: z.string().optional()
+  VERCEL_ENV: z.string().optional(),
 });
 
 /**
@@ -33,7 +33,7 @@ export const serverSchema = z.object({
  * @type {{ [k in keyof z.infer<typeof serverSchema>]: z.infer<typeof serverSchema>[k] | undefined }}
  */
 export const _serverEnv = {
-  DATABASE_URL: process.env.VERCEL_ENV === 'production' ? process.env. :  process.env.DATABASE_URL,
+  DATABASE_URL: process.env.DATABASE_URL,
   NODE_ENV: process.env.NODE_ENV,
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
@@ -42,7 +42,7 @@ export const _serverEnv = {
   PUSHER_APP_ID: process.env.PUSHER_APP_ID,
   DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
   DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
-  VERCEL_ENV: process.env.VERCEL_ENV
+  VERCEL_ENV: process.env.VERCEL_ENV,
 };
 
 /**
