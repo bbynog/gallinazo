@@ -10,6 +10,7 @@ const selectChannelObject = (channels?: {
 
   console.log('serverENv', serverEnv);
   console.log('clientEnv', clientEnv);
+
   if (!channels) {
     return channelsRes;
   }
@@ -35,7 +36,8 @@ const getPresenceChannels = async () => {
 
   console.log('presenceChannelsResponse', presenceChannelsResponse);
 
-  return selectChannelObject(presenceChannelsResponse.data?.channels);
+  // @ts-expect-error
+  return selectChannelObject(presenceChannelsResponse.json());
 };
 
 const usePresenceChannels = async () => {

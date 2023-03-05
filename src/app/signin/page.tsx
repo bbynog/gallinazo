@@ -4,7 +4,6 @@ import SignInButton from '@components/SignInButton';
 import Container from '@ui-components/Container';
 
 const SignIn = () => {
-  console.log('lAL');
   return (
     <Container>
       <h1>SignIn Page</h1>

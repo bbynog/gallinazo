@@ -8,7 +8,7 @@ const ProfileMenu = () => {
   return (
     <div className='flex flex-row'>
       <p>HALU: </p>
-      <p>{currentUser?.email}</p>
+      <p>{currentUser?.uid}</p>
       {currentUser ? <button onClick={signOut}>Logout</button> : null}
     </div>
   );

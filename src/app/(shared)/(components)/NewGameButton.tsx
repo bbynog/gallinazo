@@ -24,9 +24,12 @@ const NewGameButton = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     console.log('channel', channel);
-    channel?.bind('pusher:subscription_succeeded', (members: any) => {
-      console.log(`There are ${members.count} members in this channel`);
-    });
+    channel?.bind(
+      'pusher:subscription_succeeded',
+      (members: { count: number }) => {
+        console.log(`There are ${members.count} members in this channel`);
+      },
+    );
     channel?.bind('halu-event', (data: any) => {
       console.log('data', data);
     });
@@ -34,11 +37,9 @@ const NewGameButton = ({ children }: PropsWithChildren) => {
     channel?.bind('pusher:subscription_error', (error: any) => {
       console.error('subscription error', error);
     });
-
-    return () => {};
   }, [channel]);
 
-  const onClickHandler = async () => {
+  const onClickHandler = () => {
     if (!channel) {
       subscribe();
     }

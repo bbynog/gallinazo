@@ -1,7 +1,6 @@
 'use client';
 
 import useAuth from '@hooks/useAuth';
-import type Player from '@models/Player';
 import Container from '@ui-components/Container';
 import { use, useEffect, useState } from 'react';
 
@@ -32,9 +31,9 @@ const GamePage = ({ params }: GamePageProps) => {
   const [signedIn, setSignedIn] = useState<boolean>(false);
 
   const [readySetGo, setReadySetGo] = useState<boolean>(false);
-  const [playersReady, setPlayersReady] = useState<Player[]>([]);
-  const [playersInLobby, setPlayersInLobby] = useState<Player[]>([]);
-  const [playQueue, setPlayerQueue] = useState<Player[]>();
+  const [playersReady, setPlayersReady] = useState([]);
+  const [playersInLobby, setPlayersInLobby] = useState([]);
+  const [playQueue, setPlayerQueue] = useState();
 
   useEffect(() => {
     if (!signedIn && currentUser?.uid) {
