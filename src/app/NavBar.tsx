@@ -16,6 +16,7 @@ const NavBar = () => {
       <button>
         <Link href={'/about'}>About (presencechannel testing)</Link>
       </button>
+      {/* @ts-expect-error */}
       <ProfileMenu />
     </div>
   );
