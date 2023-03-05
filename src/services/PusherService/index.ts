@@ -1,8 +1,8 @@
 'use client';
 
+import { clientEnv } from '@env/clientEnv.mjs';
 import pusherJs from 'pusher-js';
 import { getAuthendpoint } from './functions';
-import { clientEnv } from 'src/env/client.mjs';
 
 class ClientPusherService {
   private static serviceInstance = new ClientPusherService();

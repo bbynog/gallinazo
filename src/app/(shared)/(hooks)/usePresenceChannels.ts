@@ -1,6 +1,6 @@
+import { clientEnv } from '@env/clientEnv.mjs';
+import { serverEnv } from '@env/serverEnv.mjs';
 import type Channel from '@models/Channel';
-import { clientEnv } from 'src/env/client.mjs';
-import { serverEnv } from 'src/env/server.mjs';
 
 const selectChannelObject = (channels?: {
   channelName: string;

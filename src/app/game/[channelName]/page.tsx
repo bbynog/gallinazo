@@ -14,10 +14,13 @@ const signIn = async (channelName: string, uid: string) => {
   const signInResponse = await fetch('/api/game/session/signin', {
     method: 'POST',
     cache: 'no-cache',
-    body: JSON.stringify({
-      channelName: channelName,
-      uid: uid,
-    }),
+    body:
+      channelName && uid
+        ? JSON.stringify({
+            channelName: channelName,
+            uid: uid,
+          })
+        : null,
   });
 
   return signInResponse;

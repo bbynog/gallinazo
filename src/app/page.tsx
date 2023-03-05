@@ -1,5 +1,5 @@
+import { getServerAuthSession } from '@features/authentication/getServerAuthSession';
 import Container from '@ui-components/Container';
-import { getServerAuthSession } from '../features/authentication/getServerAuthSession';
 
 export default async function Home() {
   // const session = getSession();
@@ -9,6 +9,7 @@ export default async function Home() {
     'server session',
     serverSession ? JSON.stringify(serverSession, null, 2) : null,
   );
+  console.log('env process', process.env);
   return (
     <Container>
       <p className={'text-red'}>Welcome to gallinazo!</p>
