@@ -1,5 +1,4 @@
 import { clientEnv } from '@env/clientEnv.mjs';
-import { serverEnv } from '@env/serverEnv.mjs';
 import type Channel from '@models/Channel';
 
 const selectChannelObject = (channels?: {
@@ -7,9 +6,6 @@ const selectChannelObject = (channels?: {
   channelInfo: { user_count: number };
 }) => {
   const channelsRes: Channel[] = [];
-
-  console.log('serverENv', serverEnv);
-  console.log('clientEnv', clientEnv);
 
   if (!channels) {
     return channelsRes;
@@ -27,15 +23,12 @@ const selectChannelObject = (channels?: {
 };
 
 const getPresenceChannels = async () => {
-  console.log('serverEnv', serverEnv);
   const presenceChannelsResponse = await fetch(
     clientEnv.NEXT_PUBLIC_APP_URL + '/api/pusher/get-presence-channels',
     {
       next: { revalidate: 10 },
     },
   );
-
-  console.log('presenceChannelsResponse', presenceChannelsResponse);
 
   // @ts-expect-error
   return selectChannelObject(presenceChannelsResponse.json());
