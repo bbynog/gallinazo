@@ -14,17 +14,15 @@ const config = {
       parserOptions: {
         project: 'tsconfig.json',
       },
-      rules: [
-        {
-          '@typescript-eslint/consistent-type-imports': [
-            'warn',
-            {
-              prefer: 'type-imports',
-              fixStyle: 'inline-type-imports',
-            },
-          ],
-        },
-      ],
+      rules: {
+        '@typescript-eslint/consistent-type-imports': [
+          'warn',
+          {
+            prefer: 'type-imports',
+            fixStyle: 'inline-type-imports',
+          },
+        ],
+      },
     },
   ],
 };
