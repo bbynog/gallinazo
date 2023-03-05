@@ -14,6 +14,7 @@ export const clientSchema = z.object({
 });
 
 const resolveAppUrl = () => {
+  console.log('NEXT_PUBLIC_VERCEL_ENV', process.env.NEXT_PUBLIC_VERCEL_ENV);
   if (
     process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' ||
     process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
