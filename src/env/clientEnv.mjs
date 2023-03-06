@@ -9,7 +9,7 @@ if (!__clientEnv.success) {
     '❌ Invalid client environment variables:\n',
     ...formatErrors(__clientEnv.error.format()),
   );
-  throw new Error('Invalid environment variables');
+  throw new Error('Invalid client environment variables');
 }
 
 for (let key of Object.keys(__clientEnv.data)) {
