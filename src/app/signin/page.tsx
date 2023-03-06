@@ -6,11 +6,9 @@ import Container from '@ui-components/Container';
 const SignIn = () => {
   return (
     <Container>
-      <h1>SignIn Page</h1>
+      <h1>Sign In</h1>
       <form>
         <div>
-          {/* <input name={'email'} />
-          <input name={'password'} type={'password'} /> */}
           <SignInButton>Sign In</SignInButton>
           <Link href='/'>&larr; Go Back</Link>
         </div>
