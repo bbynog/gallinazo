@@ -33,7 +33,7 @@ process.env.NEXT_PUBLIC_APP_URL = resolveAppUrl();
 console.log('🚀 ~ NEXT_PUBLIC_APP_URL:', process.env.NEXT_PUBLIC_APP_URL);
 
 /**
- * You can't destruct `process.env` as a regular object, so you have to do
+ * You can't destruct process.env as a regular object, so you have to do
  * it manually here. This is because Next.js evaluates this at build time,
  * and only used environment variables are included in the build.
  * @type {{ [k in keyof z.infer<typeof clientSchema>]: z.infer<typeof clientSchema>[k] | undefined }}
