@@ -14,7 +14,6 @@ export const clientSchema = z.object({
 });
 
 const resolveAppUrl = () => {
-  console.log('NEXT_PUBLIC_VERCEL_ENV', process.env.NEXT_PUBLIC_VERCEL_ENV);
   if (
     process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' ||
     process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
@@ -31,6 +30,7 @@ const resolveAppUrl = () => {
 };
 
 process.env.NEXT_PUBLIC_APP_URL = resolveAppUrl();
+console.log('🚀 ~ NEXT_PUBLIC_APP_URL:', process.env.NEXT_PUBLIC_APP_URL);
 
 /**
  * You can't destruct `process.env` as a regular object, so you have to do
