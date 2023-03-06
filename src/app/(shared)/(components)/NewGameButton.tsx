@@ -23,7 +23,7 @@ const NewGameButton = ({ children }: PropsWithChildren) => {
     channel?.bind(
       'pusher:subscription_succeeded',
       (members: { count: number }) => {
-        console.log(`There are ${members.count} members in this channel`);
+        console.log(`There are ${members.count} members in this channel.`);
       },
     );
     channel?.bind('halu-event', (data: any) => {
