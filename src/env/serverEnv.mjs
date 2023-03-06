@@ -14,7 +14,9 @@ if (!__serverEnv.success) {
     '❌ Invalid server environment variables:\n',
     ...formatErrors(__serverEnv.error.format()),
   );
-  throw new Error(`Invalid server environment variables: ${_serverEnv}`);
+  throw new Error(
+    `Invalid server environment variables: ${JSON.stringify(_serverEnv)}`,
+  );
 }
 
 for (let key of Object.keys(__serverEnv.data)) {
