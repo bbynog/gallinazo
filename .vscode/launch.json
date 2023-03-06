@@ -1,0 +1,40 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Next: debug server-side",
+        "type": "node-terminal",
+        "request": "launch",
+        "command": "vercel dev"
+      },
+      {
+        "name": "Next: SSL Proxy",
+        "type": "node-terminal",
+        "request": "launch",
+        "command": "local-ssl-proxy --source 3001 --target 3000"
+      },
+      {
+        "name": "Next: debug client-side(UNSAFE)",
+        "type": "chrome",
+        "request": "launch",
+        "url": "http://localhost:3000"
+      },
+      {
+        "name": "Next: debug client-side(SAFE)",
+        "type": "chrome",
+        "request": "launch",
+        "url": "https://localhost:3001"
+      },
+      {
+        "name": "Next.js: debug full stack",
+        "type": "node-terminal",
+        "request": "launch",
+        "command": "vercel dev",
+        "serverReadyAction": {
+          "pattern": "started server on .+, url: (https?://.+)",
+          "uriFormat": "%s",
+          "action": "debugWithChrome"
+        }
+      }
+    ]
+  }

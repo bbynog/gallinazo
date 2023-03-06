@@ -1,8 +1,5 @@
-'use client';
-
-import useAuth from '@hooks/useAuth';
+import { getServerAuthSession } from '@features/authentication/getServerAuthSession';
 import Container from '@ui-components/Container';
-import { use, useEffect, useState } from 'react';
 
 interface GamePageProps {
   params: {
@@ -10,41 +7,12 @@ interface GamePageProps {
   };
 }
 
-const signIn = async (channelName: string, uid: string) => {
-  const signInResponse = await fetch('/api/game/session/signin', {
-    method: 'POST',
-    cache: 'no-cache',
-    body:
-      channelName && uid
-        ? JSON.stringify({
-            channelName: channelName,
-            uid: uid,
-          })
-        : null,
-  });
-
-  return signInResponse;
-};
-
-const GamePage = ({ params }: GamePageProps) => {
+const GamePage = async ({ params }: GamePageProps) => {
   const { channelName } = params;
-  const { currentUser } = useAuth();
+  console.log('🚀 ~ file: page.tsx:13 ~ GamePage ~ channelName:', channelName);
+  const session = await getServerAuthSession();
 
-  const [signedIn, setSignedIn] = useState<boolean>(false);
-
-  const [readySetGo, setReadySetGo] = useState<boolean>(false);
-  const [playersReady, setPlayersReady] = useState([]);
-  const [playersInLobby, setPlayersInLobby] = useState([]);
-  const [playQueue, setPlayerQueue] = useState();
-
-  useEffect(() => {
-    if (!signedIn && currentUser?.uid) {
-      const signInResponse = use(signIn(channelName, currentUser.uid));
-      if (signInResponse) {
-        setSignedIn(true);
-      }
-    }
-  }, [channelName, currentUser, signedIn]);
+  console.log('session data', session);
 
   return (
     <Container>
