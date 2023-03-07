@@ -1,5 +1,6 @@
 // @ts-check
 import { z } from 'zod';
+import { resolveAppUrl } from './utils';
 
 /**
  * Specify your client-side environment variables schema here.
@@ -13,27 +14,11 @@ export const clientSchema = z.object({
   NEXT_PUBLIC_VERCEL_ENV: z.string(),
 });
 
-const resolveAppUrl = () => {
-  console.log('NEXT_PUBLIC_VERCEL_ENV', process.env.NEXT_PUBLIC_VERCEL_ENV);
-  if (
-    process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' ||
-    process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
-  ) {
-    return `https://${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}-git-${process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF}-${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}.vercel.app`;
-  } else if (
-    !process.env.NEXT_PUBLIC_VERCEL_ENV ||
-    process.env.NEXT_PUBLIC_VERCEL_ENV === 'development'
-  ) {
-    return 'http://localhost:3000';
-  }
-
-  return 'http://localhost:3000';
-};
-
 process.env.NEXT_PUBLIC_APP_URL = resolveAppUrl();
+console.log('🚀 ~ NEXT_PUBLIC_APP_URL:', process.env.NEXT_PUBLIC_APP_URL);
 
 /**
- * You can't destruct `process.env` as a regular object, so you have to do
+ * You can't destruct process.env as a regular object, so you have to do
  * it manually here. This is because Next.js evaluates this at build time,
  * and only used environment variables are included in the build.
  * @type {{ [k in keyof z.infer<typeof clientSchema>]: z.infer<typeof clientSchema>[k] | undefined }}

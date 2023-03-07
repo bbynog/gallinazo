@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PresenceChannelData } from 'pusher';
 
-import { pusher } from '@server/pusher';
+import { pusher } from '@features/pusher/pusher';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
