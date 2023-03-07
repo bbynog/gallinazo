@@ -1,5 +1,6 @@
 // @ts-check
 import { z } from 'zod';
+import { resolveAppUrl } from './utils';
 
 /**
  * Specify your client-side environment variables schema here.
@@ -12,22 +13,6 @@ export const clientSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.string(),
   NEXT_PUBLIC_VERCEL_ENV: z.string(),
 });
-
-const resolveAppUrl = () => {
-  if (
-    process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' ||
-    process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
-  ) {
-    return `https://${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}-git-${process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF}-${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}.vercel.app`;
-  } else if (
-    !process.env.NEXT_PUBLIC_VERCEL_ENV ||
-    process.env.NEXT_PUBLIC_VERCEL_ENV === 'development'
-  ) {
-    return 'http://localhost:3000';
-  }
-
-  return 'http://localhost:3000';
-};
 
 process.env.NEXT_PUBLIC_APP_URL = resolveAppUrl();
 console.log('🚀 ~ NEXT_PUBLIC_APP_URL:', process.env.NEXT_PUBLIC_APP_URL);

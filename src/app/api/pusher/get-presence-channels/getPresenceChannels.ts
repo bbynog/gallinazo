@@ -1,4 +1,4 @@
-import { pusher } from '@server/pusher';
+import { pusher } from '@features/pusher/pusher';
 import Pusher from 'pusher';
 
 const getPresenceChannels = async () => {

@@ -34,9 +34,7 @@ export const _serverEnv = {
   DATABASE_URL: process.env.DATABASE_URL,
   NODE_ENV: process.env.NODE_ENV,
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
-  NEXTAUTH_URL: process.env.NEXT_PUBLIC_VERCEL_URL
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : 'http://localhost:3000',
+  NEXTAUTH_URL: process.env.NEXT_PUBLIC_APP_URL,
   PUSHER_APP_SECRET: process.env.PUSHER_APP_SECRET,
   PUSHER_APP_ID: process.env.PUSHER_APP_ID,
   DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,

@@ -1,6 +1,6 @@
+import { prisma } from '@features/db/prisma';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import type { DefaultSession, NextAuthOptions } from 'next-auth';
-import { prisma } from 'src/server/db';
 
 import { serverEnv } from '@env/serverEnv.mjs';
 
