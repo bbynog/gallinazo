@@ -6,22 +6,16 @@ Check it out!
 
 Tech stack:
 
-* [NextJS](https://nextjs.org/)
+- [NextJS](https://nextjs.org/)
 
-* [Pusher](https://pusher.com/) for websocket connection
+- [Pusher](https://pusher.com/) for websocket connection
 
-* [Next-Auth](https://next-auth.js.org/) for authentication
+- [Next-Auth](https://next-auth.js.org/) for authentication
 
-* [Tailwindcss](https://tailwindcss.com/)
+- [Tailwindcss](https://tailwindcss.com/)
 
-* [DaisyUI](https://daisyui.com/)
+- [DaisyUI](https://daisyui.com/)
 
-* [Amazon RDS - PostgreSQL](https://aws.amazon.com/pt/rds/)
+- [Neon - Postgresql](https://neon.tech/)
 
-* [Prisma ORM](https://www.prisma.io/)
-
-
-
-
-
-
+- [Prisma ORM](https://www.prisma.io/)
