@@ -17,4 +17,5 @@ const SignIn = () => {
   );
 };
 
+export const runtime = 'experimental-edge';
 export default SignIn;

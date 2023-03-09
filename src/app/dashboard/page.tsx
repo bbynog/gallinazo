@@ -2,7 +2,7 @@ import NewGameButton from '@components/NewGameButton';
 import Container from '@ui-components/Container';
 import Link from 'next/link';
 
-export default async function Dashboard() {
+const Dashboard = async () => {
   // const presenceChannels = await usePresenceChannels();
 
   return (
@@ -19,4 +19,7 @@ export default async function Dashboard() {
       <Link href='/'>&larr; Go Back</Link>
     </Container>
   );
-}
+};
+
+export const runtime = 'experimental-edge';
+export default Dashboard;

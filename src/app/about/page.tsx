@@ -1,7 +1,7 @@
-import Link from 'next/link';
 import Container from '@ui-components/Container';
+import Link from 'next/link';
 
-export default function About() {
+const About = () => {
   // useEffect(() => {
   //   const currentUser = getAuth().currentUser;
 
@@ -36,4 +36,7 @@ export default function About() {
       <Link href='/'>&larr; Go Back</Link>
     </Container>
   );
-}
+};
+
+export const runtime = 'experimental-edge';
+export default About;
