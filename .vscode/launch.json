@@ -1,40 +1,45 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-      {
-        "name": "Next: debug server-side",
-        "type": "node-terminal",
-        "request": "launch",
-        "command": "vercel dev"
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "FullStack(SAFE)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "vercel dev --listen 3000",
+      "serverReadyAction": {
+        "action": "startDebugging",
+        "name": "SSL",
+        "killOnServerStop": true,
+        "pattern": "started server on .+, url: (https?://.+)"
       },
-      {
-        "name": "Next: SSL Proxy",
-        "type": "node-terminal",
-        "request": "launch",
-        "command": "local-ssl-proxy --source 3001 --target 3000"
-      },
-      {
-        "name": "Next: debug client-side(UNSAFE)",
-        "type": "chrome",
-        "request": "launch",
-        "url": "http://localhost:3000"
-      },
-      {
-        "name": "Next: debug client-side(SAFE)",
-        "type": "chrome",
-        "request": "launch",
-        "url": "https://localhost:3001"
-      },
-      {
-        "name": "Next.js: debug full stack",
-        "type": "node-terminal",
-        "request": "launch",
-        "command": "vercel dev",
-        "serverReadyAction": {
-          "pattern": "started server on .+, url: (https?://.+)",
-          "uriFormat": "%s",
-          "action": "debugWithChrome"
-        }
+      "cascadeTerminateToConfigurations": ["SSL"]
+    },
+    {
+      "name": "FullStack(UNSAFE)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "vercel dev",
+      "serverReadyAction": {
+        "action": "debugWithChrome",
+        "killOnServerStop": true,
+        "pattern": "started server on .+, url: (https?://.+)"
       }
-    ]
-  }
+    },
+    {
+      "name": "SSL",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "local-ssl-proxy --source 3001 --target 3000",
+      "serverReadyAction": {
+        "pattern": "Started proxy",
+        "action": "debugWithChrome",
+        "killOnServerStop": true,
+        "uriFormat": "https://localhost:3001"
+      },
+      "cascadeTerminateToConfigurations": [
+        "FullStack(SAFE)",
+        "FullStack(UNSAFE)"
+      ]
+    }
+  ]
+}
