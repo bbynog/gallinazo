@@ -21,5 +21,4 @@ const Dashboard = async () => {
   );
 };
 
-export const runtime = 'experimental-edge';
 export default Dashboard;

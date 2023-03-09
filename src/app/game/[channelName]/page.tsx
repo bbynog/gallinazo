@@ -21,5 +21,4 @@ const GamePage = async ({ params }: GamePageProps) => {
   );
 };
 
-export const runtime = 'experimental-edge';
 export default GamePage;

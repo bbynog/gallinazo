@@ -16,5 +16,4 @@ const SignUp = () => {
   );
 };
 
-export const runtime = 'experimental-edge';
 export default SignUp;
