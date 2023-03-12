@@ -1,5 +1,3 @@
-// import { useCallback, useEffect, useState } from 'react';
-
 const useAuth = () => {
   return {
     currentUser: { uid: 'testing' },
