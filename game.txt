@@ -1,36 +1,46 @@
-CGS = clientGameState
+* Minimalist layout
+    * Smallest number of buttons/actions possible.
 
-CGS {
-    any changes on client game state must be fired through client events and fire a server event as well
-        * client event:
-            * must be listened by all clients and updates UI
+* Animations
+* Social features
+    * Leaderboards
+    * Voice while playing
+    * 
+* Red and gray color pallete
 
-        * server event:
-            * will update the old clientgamestate by the new one on the DB
-            * will do calculations and update the serverGameState on DB
-            * fire event to the clients with new CGS
-}
+* Goals:
+    * Launch MVP (without animations and sounds)
+        * Home and dashboard
+            * Client:
+                * layout
+                    * Home:
+                        * Minimalist
+                            * Title
+                            * Image representing the game
+                            * Loggedin ? DashboardButton : LoginButton
+                    * Dashboard
+                        * Search Tables
+                        * Grid of Opened tables
+                        * FAB to open table || (Green)Reconnect to game
+
+                        * TableCard
+                            * Country Flag:
+                                * Automatically get host country and set flag
+                                * Optionally edited by the host
+                            * Players on table
+                            
+            * Server:
+                * db
+                    * Users
+                    * Tables
+        * Game
+* Tasks:
+    * Decide theme and implement it
+    * Prototype home page and dashboard page on Figma
+    * Implement those pages
 
 
 
-* Clients cannot have access to the values of the cards, or the deck, or anything that could lead to cheating, 
-so server must do the heavy lifting
-
-* Must do individual CGS validation everytime a new CGS is fired to check if this client did not miss any CGS changes(if did not miss any events)
-
-    Possible Player Actions {
-
-    
-
-    CUT {
-        type: 'SELF' | 'FOE' 
-        success: boolean;
-            if FOE:
-        card: Card
-    }
-
-        
-}
 
 * CutFlow:
             * can be done at any moment since the start of the game to the end
@@ -110,124 +120,3 @@ so server must do the heavy lifting
             * if he wins: -10 points plus cards
             * if he loses: +10 points plus cards
         * every else: cards scores
-
-
-Game: {
-    id: Number;
-    table: Table;
-    endgamePlayers: User[];
-    quitPlayers: User[];
-    turns: Turn[];
-    startedAt: DateTime;
-    endedAt: DateTime;
-}
-
-Player: {
-    id: number;
-    user: User;
-}
-
-Turn: {
-    id: number;
-    player: User;
-    game: Game;
-    action: TurnAction; 
-    draw: Draw | null;  
-    cut: Cut | null;
-}
-
-TurnAction: 
-{
-    id: 1;
-    name: DRAW;
-},
-{
-    id: 2;
-    name: KNOCK;
-}
-
-
-Draw: {
-    id: number;
-    turn: Turn;
-    from: CardSource;
-    card: Card;
-    discard: Card;
-    action: DrawAction;
-}
-
-CardSource: 
-{
-    id: 1;
-    name: DECK;
-},
-{
-    id: 2;
-    name: DISCARD_PILE;
-}
-
-DrawAction:
-{
-    id: number;
-    name: KEEP;
-    effects: null;
-},
-{
-    id: number;
-    name: CAST;
-    effects: SpellCast;
-}
-
-Spell: {
-    id: number;
-    description: big string;
-    name: string;
-}
-
-SpellCast: {
-    id: number;
-    spell: Spell;
-    target: SpellCastTarget;
-}
-
-SpellCastTargets {
-    id: number;
-    spellCast: SpellCast;
-    primary: Card;
-    secondary: Card | null;
-}
-
-Table: {
-    id: Number;
-    host: User;
-    name: string;
-    games: Game[];
-    status: TableStatus;
-    playersHistory: PlayerTable[];
-    openedAt: DateTime;
-    closedAt: DateTime;
-}
-
-TableStatus {
-    id: number;
-    table: Table;
-    history: TableStatusChange[];
-}
-
-TableStatusChange: {
-    id: number;
-    tableStatus: TableStatus;
-    changeTo: OPEN | CLOSE;
-    openedAt: DateTime | null;
-    closedAt: DateTime | null;
-}
-
-
-PlayerTable {
-    id: number;
-    user: User;
-    table: Table;
-    sit: boolean;
-    joinedAt: DateTime[];
-    leftAt: DateTime[];
-}
