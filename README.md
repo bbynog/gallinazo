@@ -1,3 +1,5 @@
+[APP UNDER CONSTRUCTION]
+
 ## Play [Gallinazo](https://gallinazo.vercel.app/)!
 
 [Gallinazo](https://gallinazo.vercel.app/) is a memory based card game
